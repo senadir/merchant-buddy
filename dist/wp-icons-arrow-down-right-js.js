@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkalgolia_search=self.webpackChunkalgolia_search||[]).push([[9455],{2561:(e,a,l)=>{Object.defineProperty(a,"__esModule",{value:!0}),a.default=void 0;var s=l(5573),h=l(790);const t=(0,h.jsx)(s.SVG,{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 24 24",children:(0,h.jsx)(s.Path,{d:"M10 18h8v-8h-1.5v5.5L7 6 6 7l9.5 9.5H10V18Z"})});a.default=t}}]);
