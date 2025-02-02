@@ -1,0 +1,27 @@
+{
+	"exclude": [ "node_modules" ],
+	"compilerOptions": {
+		"outDir": "./build",
+		"sourceMap": true,
+		"baseUrl": ".",
+		"module": "esnext",
+		"emitDeclarationOnly": true,
+		"esModuleInterop": true,
+		"exactOptionalPropertyTypes": true,
+		"resolveJsonModule": true,
+		"jsx": "preserve",
+		"target": "esnext",
+		"allowJs": true,
+		"moduleResolution": "node",
+		"lib": [ "dom", "esnext" ],
+		"checkJs": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"strictNullChecks": true,
+		"allowSyntheticDefaultImports": true,
+		"composite": true,
+		"rootDir": ".",
+		"typeRoots": [ "./node_modules/@types" ],
+		"types": [ "jest", "jquery" ],
+	}
+}

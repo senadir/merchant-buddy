@@ -1,0 +1,8 @@
+config.php
+node_modules
+build
+vscode
+*.zip
+*.tgz
+.DS_Store
+vendor/
