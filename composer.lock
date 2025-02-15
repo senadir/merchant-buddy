@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4565453968f74eb4192fc48891fc54d4",
+    "content-hash": "2f0d25cbf70ec836dafe3f96c1d81697",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -236,40 +236,6 @@
         }
     ],
     "packages-dev": [
-        {
-            "name": "akirk/extract-wp-hooks",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/akirk/extract-wp-hooks.git",
-                "reference": "e163d620f3c5f923daee4b31175e4b3ebc9baf3c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/akirk/extract-wp-hooks/zipball/e163d620f3c5f923daee4b31175e4b3ebc9baf3c",
-                "reference": "e163d620f3c5f923daee4b31175e4b3ebc9baf3c",
-                "shasum": ""
-            },
-            "bin": [
-                "extract-wp-hooks.php"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Alex Kirk"
-                }
-            ],
-            "description": "Extract available WordPress hooks for a Github Wiki",
-            "support": {
-                "issues": "https://github.com/akirk/extract-wp-hooks/issues",
-                "source": "https://github.com/akirk/extract-wp-hooks/tree/1.0.2"
-            },
-            "time": "2024-11-25T21:22:03+00:00"
-        },
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
             "version": "v1.0.0",

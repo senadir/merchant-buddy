@@ -20,8 +20,7 @@
     "phpstan/extension-installer": "^1.4",
     "php-stubs/woocommerce-stubs": "^9.3",
     "php-stubs/wp-cli-stubs": "^2.10",
-    "php-collective/code-sniffer": "^0.2.11",
-    "akirk/extract-wp-hooks": "^1.0"
+    "php-collective/code-sniffer": "^0.2.11"
   },
   "config": {
     "allow-plugins": {
