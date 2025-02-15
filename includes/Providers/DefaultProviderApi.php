@@ -34,7 +34,6 @@ class DefaultProviderApi {
 		$this->provider = $provider;
 	}
 
-
 	/**
 	 * Get the enabled entities
 	 *
@@ -135,7 +134,7 @@ class DefaultProviderApi {
 				);
 			}
 		}
-		sleep( 2);
+
 		return new \WP_HTTP_Response( $data );
 	}
 

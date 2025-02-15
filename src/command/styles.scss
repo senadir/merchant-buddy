@@ -1,8 +1,22 @@
 @use "sass:math";
 @import "tailwindcss";
 
-// @Todo: Refactor this to use tailwind.
+//Brand colors
+:root {
+  --mint-cream: #f5fff5;
+  --jet: #333333;
+  --delft-blue: #2e2f60;
+  --naples-yellow: #ffe66b;
+  --persian-green: #1b9889;
 
+  --primary: var(--persian-green);
+  --secondary: var(--naples-yellow);
+  --background-accent: var(--delft-blue);
+  --text: var(--mint-cream);
+  --background-light: var(--jet);
+}
+
+// @Todo: Refactor this to use tailwind.
 .search-buddy-panel-container {
   --font-sans: "Inter", --apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;

@@ -29,7 +29,9 @@ class SearchSettings extends WC_Integration {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'hydrate_client_settings' ) );
 		add_action( 'rest_api_init', array( $this, 'register_settings' ) );
-		add_filter( 'plugin_action_links_' . MERCHANT_BUDDY_BASENAME, array( $this, 'add_plugin_action_links' ) );
+		if ( defined( 'MERCHANT_BUDDY_BASENAME' ) ) {
+			add_filter( 'plugin_action_links_' . MERCHANT_BUDDY_BASENAME, array( $this, 'add_plugin_action_links' ) );
+		}
 	}
 
 	/**
@@ -71,7 +73,7 @@ class SearchSettings extends WC_Integration {
 		);
 		$enabled_entities    = get_option( 'woo_buddy_enabled_entities', array( 'orders', 'products', 'customers' ) );
 		$available_providers = apply_filters( // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-			'woo_buddy_search_providers',
+			'woo_buddy_available_providers',
 			array(
 				'default' => Providers\DefaultProvider::class,
 				'algolia' => Providers\Algolia::class,
@@ -206,7 +208,7 @@ class SearchSettings extends WC_Integration {
 		);
 
 		$available_providers = apply_filters( // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-			'woo_buddy_search_providers',
+			'woo_buddy_available_providers',
 			array(
 				'default' => Providers\DefaultProvider::class,
 				'algolia' => Providers\Algolia::class,

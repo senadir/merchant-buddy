@@ -1,0 +1,63 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Merchant Buddy",
+  "description": "Merchant Buddy is a search/command palette tool for WooCommerce merchants.",
+  "colors": {
+    "primary": "#2e2f60",
+    "light": "#1b998b",
+    "dark": "#2f3061"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Concepts",
+        "pages": ["concepts/entity", "concepts/provider", "concepts/template"]
+      },
+      {
+        "group": "Guides",
+        "pages": [
+          "guides/create-entity",
+          "guides/create-provider",
+          "guides/create-template"
+        ]
+      },
+      {
+        "group": "API Reference",
+        "pages": [
+          "references/entity",
+          "references/provider",
+          "references/template"
+        ]
+      },
+      {
+        "group": "Actions and filters",
+        "pages": ["hooks/actions", "hooks/filters"]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Download",
+        "href": "https://github.com/senadir/merchant-buddy/releases"
+      }
+    ],
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/senadir/merchant-buddy"
+    }
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/mintlify",
+      "github": "https://github.com/mintlify",
+      "linkedin": "https://linkedin.com/company/mintlify"
+    }
+  }
+}

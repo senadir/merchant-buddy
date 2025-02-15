@@ -114,7 +114,7 @@ class SearchManager {
 		 * @since 1.0.0
 		 */
 		$providers = apply_filters(
-			'woo_buddy_search_providers',
+			'woo_buddy_available_providers',
 			array(
 				'default' => DefaultProvider::class,
 				'algolia' => Algolia::class,
@@ -339,7 +339,7 @@ class SearchManager {
 		 * @since 1.0.0
 		 */
 		$providers = apply_filters(
-			'woo_buddy_search_providers',
+			'woo_buddy_available_providers',
 			array(
 				'default' => DefaultProvider::class,
 				'algolia' => Algolia::class,

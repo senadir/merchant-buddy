@@ -96,11 +96,7 @@ class Products extends AbstractEntity implements Batchable {
 
 		$product_data = $this->get_item_data( $product );
 		try {
-			if ( method_exists( $this->provider, 'create_product' ) ) {
-				$this->provider->create_product( $product_data, $product_id );
-			} else {
-				$this->provider->create_item( $product_data, $product_id, 'products' );
-			}
+			$this->provider->create_item( $product_data, $product_id, 'products' );
 		} catch ( Exception $e ) {
 			wc_get_logger()->error( sprintf( 'WooBuddy: Creating product item failed with error: %s', $e->getMessage() ) );
 		}
@@ -123,11 +119,7 @@ class Products extends AbstractEntity implements Batchable {
 		$product_data = $this->get_item_data( $product );
 
 		try {
-			if ( method_exists( $this->provider, 'update_product' ) ) {
-				$this->provider->update_product( $product_data, $product_id );
-			} else {
-				$this->provider->update_item( $product_data, $product_id, 'products' );
-			}
+			$this->provider->update_item( $product_data, $product_id, 'products' );
 		} catch ( Exception $e ) {
 			wc_get_logger()->error( sprintf( 'WooBuddy: Updating product item failed with error: %s', $e->getMessage() ) );
 		}
@@ -145,11 +137,7 @@ class Products extends AbstractEntity implements Batchable {
 		}
 
 		try {
-			if ( method_exists( $this->provider, 'delete_product' ) ) {
-				$this->provider->delete_product( $product_id );
-			} else {
-				$this->provider->delete_item( $product_id, 'products' );
-			}
+			$this->provider->delete_item( $product_id, 'products' );
 		} catch ( Exception $e ) {
 			wc_get_logger()->error( sprintf( 'WooBuddy: Deleting product item failed with error: %s', $e->getMessage() ) );
 		}

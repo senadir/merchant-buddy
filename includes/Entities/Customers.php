@@ -115,11 +115,7 @@ class Customers extends AbstractEntity implements Batchable {
 
 		$customer_data = $this->get_item_data( $customer );
 		try {
-			if ( method_exists( $this->provider, 'create_customer' ) ) {
-				$this->provider->create_customer( $customer_data, $customer_id );
-			} else {
-				$this->provider->create_item( $customer_data, $customer_id, 'customers' );
-			}
+			$this->provider->create_item( $customer_data, $customer_id, 'customers' );
 		} catch ( \Exception $e ) {
 			wc_get_logger()->error( sprintf( 'WooBuddy: Creating customer item failed with error: %s', $e->getMessage() ) );
 		}
@@ -138,11 +134,7 @@ class Customers extends AbstractEntity implements Batchable {
 		$customer_data = $this->get_item_data( $customer );
 
 		try {
-			if ( method_exists( $this->provider, 'update_customer' ) ) {
-				$this->provider->update_customer( $customer_data, $customer_id );
-			} else {
-				$this->provider->update_item( $customer_data, $customer_id, 'customers' );
-			}
+			$this->provider->update_item( $customer_data, $customer_id, 'customers' );
 		} catch ( \Exception $e ) {
 			wc_get_logger()->error( sprintf( 'WooBuddy: Updating customer item failed with error: %s', $e->getMessage() ) );
 		}
@@ -160,11 +152,7 @@ class Customers extends AbstractEntity implements Batchable {
 		}
 
 		try {
-			if ( method_exists( $this->provider, 'delete_customer' ) ) {
-				$this->provider->delete_customer( $customer_id );
-			} else {
-				$this->provider->delete_item( $customer_id, 'customers' );
-			}
+			$this->provider->delete_item( $customer_id, 'customers' );
 		} catch ( \Exception $e ) {
 			wc_get_logger()->error( sprintf( 'WooBuddy: Deleting customer item failed with error: %s', $e->getMessage() ) );
 		}

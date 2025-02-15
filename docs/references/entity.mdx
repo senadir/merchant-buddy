@@ -1,0 +1,136 @@
+Entities are the core of the search, they are the ones that will be searched against, and they are the ones that will be displayed in the search results. You can read more about entities in the [Concepts -> Entities](./concepts/entities.md) page.
+
+## `AbstractEntity`
+
+```php
+use Nadir\MerchantBuddy\Entities\AbstractEntity;
+```
+
+All entities should extend the `AbstractEntity` class, which initself implments `EntityInterface`.
+
+`AbstactEntity` injects the currently selected provider into the entity, which can be accessed via `$this->provider`.
+
+<ParamField path="protected: provider" type="ProviderInterface">
+  The search provider currently selected in the search settings.
+</ParamField>
+
+<ParamField path="searchable_fields" type="string[]" default="[]">
+  An array of fields that should be searchable, this is used by the provider to
+  index said fields.
+</ParamField>
+
+<ParamField path="display_fields" type="string[]" default="[]">
+  An array of fields that should be displayed, this is used by the provider to
+  return only the needed fields.
+</ParamField>
+
+<ParamField path="get_searchable_fields(): array" type="string[]">
+  Returns an array of fields that should be searchable, this is used by the
+  provider to index said fields. This method can be overridden to return a
+  different array of fields via filters.
+</ParamField>
+
+<ParamField path="get_display_fields(): array" type="string[]">
+  Returns an array of fields that should be displayed, this is used by the
+  provider to return only the needed fields. This method can be overridden to
+  return a different array of fields via filters.
+</ParamField>
+
+## `EntityInterface`
+
+```php
+use Nadir\MerchantBuddy\Entities\EntityInterface;
+```
+
+Entities are required to implement EntityInterface, which is done via using AbstactEntity.
+
+<ParamField path="get_entity_slug(): string" type="string">
+  Returns a unique slug for the entity, to avoid dubplicates, this should be
+  whatever slug WordPress will use, like a custom post type or taxonomy or user
+  role.
+</ParamField>
+
+<ParamField path="get_entity_label(): string" type="string">
+  Returns a plural, human readable, transatable name for the entity.
+</ParamField>
+
+<ParamField path="init_hooks(): void" type="void">
+  Should be where hooks to create, update, and delete items for this entity are
+  registred. This is called for enabled entities.
+</ParamField>
+
+<ParamField path="search( query: string): array" type="Item[]">
+  This is relevant if you're using the default provider, this method will search
+  the entity based on a search query.
+</ParamField>
+
+<ParamField path="get_item_data( object $item ): array" type="array">
+  Should take an entity object (WC_Order, WC_Customer, WC_Product...) and
+  returns an array of which data to persist, and what data to display in the
+  search results, returns an object of properties and values, the same keys are
+  used in layout, searchable_fields and display_fields.
+</ParamField>
+
+<ParamField path="layout(): array" type="array">
+  Returns an array that describes which template to use, how to bind its values,
+  and what actions to use. The array has the following shape:
+</ParamField>
+
+<Accordion title="Layout" defaultOpen={true}>
+  A layout function must return an array with the following shape:
+
+```php
+  [
+    "template" => AbstractTemplate::class,
+    "bindings" => [
+      "template_key" => "binding_key"
+    ],
+    "actions" => [
+      "primary_action" => [
+        "label" => "string",
+        "url" => "binding_key"
+      ],
+      "secondary_action" => [
+        "label" => "string",
+        "url" => "binding_key"
+      ]
+    ]
+  ]
+```
+
+<ParamField path="template: string" type="string">
+  The class name of the template to use. Read more about [templates
+  here](./concepts/templates.md).
+</ParamField>
+
+<ParamField path="bindings: array" type="array">
+  An array that describes what value to bind to which placeholder in the
+  template.
+
+Bindings can be icons, images, single text, or several text values that gets merged.
+
+</ParamField>
+
+<ParamField path="actions: array" type="array">
+  An array that describes what actions to use, for now, actions are limited to
+  full redirect, future versions will include internal redirects (inside the
+  search bar).
+</ParamField>
+
+</Accordion>
+
+## `Batchable`
+
+```php
+use Nadir\MerchantBuddy\Entities\Contracts\Batchable;
+```
+
+Entities that support batch queries should implement a `Batchable` contract, which require a single method:
+
+<ParamField
+  path="get_items( int $page = 1, int $per_page = 10 ): array"
+  type="array"
+>
+  Takes current pagination and returns an array of length `$per_page` and items
+  of `get_item_data` array shape.
+</ParamField>

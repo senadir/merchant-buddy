@@ -1,0 +1,296 @@
+Providers are the backbone of serving data. They handle how data is stored, indexed, and retrieved for search operations.
+
+## `ProviderInterface`
+
+```php
+use Nadir\MerchantBuddy\Providers\Contracts\ProviderInterface;
+```
+
+All providers must implement the `ProviderInterface`. This interface defines the core functionality required for any search provider.
+
+<ParamField path="get_provider_label(): string" type="string">
+  Returns the publicly readable, translatable name for the provider. This is
+  used in the settings page and UI.
+</ParamField>
+
+<ParamField path="get_provider_slug(): string" type="string">
+  Returns a unique identifier for the provider. This is used for persisting
+  settings and provider identification.
+</ParamField>
+
+<ParamField path="is_ready(): bool" type="bool">
+  Returns whether the provider is properly configured and ready to be used.
+</ParamField>
+
+<ParamField
+  path="create_item(array $item_data, int $item_id, string $entity_name): bool"
+  type="bool"
+>
+  Creates a new item in the provider's data storage.
+
+<Expandable title="parameters">
+<ParamField path="item_data" type="array">
+  The data to store for searching
+</ParamField>
+
+<ParamField path="item_id" type="int">
+  The unique ID of the entity item
+</ParamField>
+
+<ParamField path="entity_name" type="string">
+</ParamField>
+</Expandable>
+</ParamField>
+
+<ParamField
+  path="update_item(array $item_data, int $item_id, string $entity_name): bool"
+  type="bool"
+>
+  Updates an existing item in the provider's data storage.
+
+<Expandable title="parameters">
+<ParamField path="item_data" type="array">
+  The updated data to store
+</ParamField>
+
+<ParamField path="item_id" type="int">
+  The unique ID of the entity item to update
+</ParamField>
+
+<ParamField path="entity_name" type="string">
+  The name of the entity this item belongs to.
+</ParamField>
+</Expandable>
+</ParamField>
+
+<ParamField
+  path="delete_item(int $item_id, string $entity_name): bool"
+  type="bool"
+>
+  Removes an item from the provider's data storage.
+
+<Expandable title="parameters">
+<ParamField path="item_id" type="int">
+  The unique ID of the entity item to delete
+</ParamField>
+
+<ParamField path="entity_name" type="string">
+  The name of the entity to delete from
+</ParamField>
+</Expandable>
+</ParamField>
+
+## `HasSettings`
+
+```php
+use Nadir\MerchantBuddy\Providers\Contracts\HasSettings;
+```
+
+The `HasSettings` trait can be used by providers that need to expose configuration options in the settings page.
+
+<ParamField path="get_settings_fields(): array" type="array" default="[]">
+  Returns an array of settings fields to be displayed in the settings page. See
+  Fields section below for structure.
+</ParamField>
+
+<ParamField path="has_settings(): bool" type="bool" default="true">
+  Indicates if the provider has configurable settings. Defaults to `true`.
+</ParamField>
+
+<ParamField
+  path="get_option_name(): string"
+  type="string"
+  default="search_buddy_{provider_slug}_settings"
+>
+  Returns the WordPress option name used to save the provider's settings.
+</ParamField>
+
+<ParamField path="get_settings(): array" type="array">
+  Returns the saved settings values for the provider. Defaults to `get_option(
+  self::get_option_name() )`.
+</ParamField>
+
+<ParamField path="get_description(): string|array" type="string|array">
+  Returns the provider's description for the settings page. Can return either: -
+  A string: Simple description text - An array: Structured description with
+  optional external link
+
+<Accordion title="Example">
+```php
+[
+  'description' => 'Description text',
+  'link' => [
+    'text' => 'Link text',
+    'url' => 'https://example.com',
+  ],
+]
+```
+</Accordion>
+</ParamField>
+
+### Fields
+
+Settings fields are defined as arrays with the following structure:
+
+<ParamField path="title" type="string">
+  The human-readable label for the field.
+</ParamField>
+
+<ParamField path="type" type="string" default="text">
+  The field type. Can be one of: `text`, `password`, `checkbox`, or `select`.
+</ParamField>
+
+<ParamField path="name" type="string">
+  The unique identifier for the field. Used to store and retrieve the value.
+</ParamField>
+
+<ParamField path="description" type="string">
+  Help text explaining the purpose of the field.
+</ParamField>
+
+<ParamField path="public" type="bool" default="true">
+  Whether the field's value should be exposed to the frontend. If true, the
+  value will be available at `window.searchBuddy[providerSlug][fieldName]`.
+</ParamField>
+
+<ParamField path="options" type="array">
+  Required for `select` type fields. An array of options in the format:
+  
+  
+```php
+[
+  ['label' => 'Human Label', 'value' => 'stored_value'],
+  ['label' => 'Human Label', 'value' => 'stored_value'],
+]
+```
+
+</ParamField>
+
+## `Batchable`
+
+```php
+use Nadir\MerchantBuddy\Providers\Contracts\Batchable;
+```
+
+Providers that support batch operations should implement the `Batchable` interface. This enables efficient bulk operations for creating, updating, and deleting multiple items at once.
+
+<ParamField
+  path="batch_add_items(array $items, string $index_name): bool"
+  type="bool"
+>
+  Adds multiple items to the provider's storage in a single operation.
+
+<Expandable title="parameters">
+<ParamField path="items" type="array">
+  Array of item data to add
+</ParamField>
+
+<ParamField path="index_name" type="string">
+  The name of the entity/index to add items to.
+</ParamField>
+</Expandable>
+</ParamField>
+
+<ParamField
+  path="batch_update_items(array $items, string $index_name): bool"
+  type="bool"
+>
+  Updates multiple items in the provider's storage in a single operation.
+
+<Expandable title="parameters">
+<ParamField path="items" type="array">
+  Array of item data to update
+</ParamField>
+
+<ParamField path="index_name" type="string">
+  The name of the entity/index to update items in.
+</ParamField>
+</Expandable>
+
+</ParamField>
+
+<ParamField
+  path="batch_delete_items(array $item_ids, string $index_name): bool"
+  type="bool"
+>
+  Deletes multiple items from the provider's storage in a single operation.
+
+<Expandable title="parameters">
+<ParamField path="item_ids" type="array">
+  Array of item IDs to delete
+</ParamField>
+
+<ParamField path="index_name" type="string">
+  The name of the entity/index to delete items from
+</ParamField>
+</Expandable>
+
+</ParamField>
+
+## `Provider` (TypeScript)
+
+On the frontend, providers need to implement the `Provider` interface:
+
+```typescript
+interface Provider {
+  id: string;
+  search: (
+    query: string,
+    entity: string,
+    signal?: AbortSignal
+  ) => Promise<Item[]>;
+  searchAll: (
+    query: string,
+    signal?: AbortSignal
+  ) => Promise<Record<string, Item[]>>;
+}
+```
+
+<ParamField path="id" type="string">
+  The provider's unique identifier, matching the PHP provider's slug.
+</ParamField>
+
+<ParamField path="search" type="function">
+  Searches for items within a specific entity
+  
+<Expandable title="parameters">
+<ParamField path="query" type="string">
+  The search query
+</ParamField>
+
+<ParamField path="entity" type="string">
+  The entity to search within
+</ParamField>
+
+<ParamField path="signal" type="AbortSignal">
+  Optional AbortSignal for cancelling requests
+</ParamField>
+
+</Expandable>
+</ParamField>
+
+<ParamField path="searchAll" type="function">
+  Searches across all entities
+  
+<Expandable title="parameters">
+<ParamField path="query" type="string">
+  The search query
+</ParamField>
+
+<ParamField path="signal" type="AbortSignal">
+  Optional AbortSignal for cancelling requests
+</ParamField>
+</Expandable>
+
+</ParamField>
+
+### `Item` Interface
+
+Search results must include at minimum:
+
+```typescript
+interface Item extends Record<string, unknown> {
+  id: number;
+  name: string;
+}
+```

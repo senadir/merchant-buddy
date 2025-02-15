@@ -1,0 +1,20 @@
+---
+title: What's an Entity?
+description: Entities are the core of the search, they are the ones that will be searched against, and they are the ones that will be displayed in the search results.
+sidebarTitle: Entity
+---
+
+Thought no better name comes to mind, an entity is the equivalent of a custom post type in WordPress, but not just that, it can also be a custom taxonomy, role, or anything creatable in your store. It is the peice of data you're searching for.
+
+## What can be an entity?
+
+- Custom post types: Products, Orders, Pages, Posts, Subscriptions, etc.
+- Custom taxonomies: Categories, Tags, Attributes, etc.
+- Custom roles: Customers, Users, Subscribers, Members, etc.
+- Custom data forms: Coupons, Gift Cards.
+
+In a sense, an entity can be anything you can query and search via text, this is not limited to what you can search using traditional WordPress search, but also whatever you can link to a unique strings and search against.
+
+## Relationship with providers
+
+Entities shouldn't be aware of the search provider, the purpose of an entity class is to transform an object to an array of key value pair, define how to display the data in a [template](./concepts/template), and hook up its own priortiy CRUD methods to the scheduler methods.

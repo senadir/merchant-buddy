@@ -31,13 +31,6 @@
 		<exclude-pattern>tests/</exclude-pattern>
 	</rule>
 
-	<rule ref="Suin.Classes.PSR4">
-		<include-pattern>includes/*</include-pattern>
-		<include-pattern>tests/php/includes/</include-pattern>
-		<properties>
-			<property name="composerJsonPath" value="composer.json"/>
-		</properties>
-	</rule>
 
 	<rule ref="Generic.PHP.RequireStrictTypes">
 		<include-pattern>includes/</include-pattern>

@@ -137,11 +137,7 @@ class Orders extends AbstractEntity implements Batchable {
 
 		$order_data = $this->get_item_data( $order );
 		try {
-			if ( method_exists( $this->provider, 'create_order' ) ) {
-				$this->provider->create_order( $order_data, $order_id );
-			} else {
-				$this->provider->create_item( $order_data, $order_id, 'orders' );
-			}
+			$this->provider->create_item( $order_data, $order_id, 'orders' );
 		} catch ( \Exception $e ) {
 			wc_get_logger()->error( sprintf( 'WooBuddy: Creating order item failed with error: %s', $e->getMessage() ) );
 		}
@@ -164,11 +160,7 @@ class Orders extends AbstractEntity implements Batchable {
 		$order_data = $this->get_item_data( $order );
 
 		try {
-			if ( method_exists( $this->provider, 'update_order' ) ) {
-				$this->provider->update_order( $order_data, $order_id );
-			} else {
-				$this->provider->update_item( $order_data, $order_id, 'orders' );
-			}
+			$this->provider->update_item( $order_data, $order_id, 'orders' );
 		} catch ( \Exception $e ) {
 			wc_get_logger()->error( sprintf( 'WooBuddy: Updating order item failed with error: %s', $e->getMessage() ) );
 		}
