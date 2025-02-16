@@ -1,0 +1,40 @@
+---
+title: Batch update entities
+sidebarTitle: wp wc batch
+---
+
+The `batch` command is used to batch update entities to a provider. It is a powerful tool that allows you to update multiple entities at once.
+
+## Usage
+
+```bash
+wp wc batch update orders
+```
+
+Will update all orders to the selected provider.
+
+```bash
+wp wc batch update orders --provider=algolia
+```
+
+Will update all orders to the Algolia provider.
+
+```bash
+wp wc batch update all
+```
+
+Will update all entities to the selected provider.
+
+```bash
+wp wc batch update orders --per-page=50
+```
+
+Will update 50 orders at a time instead of 20.
+
+```bash
+wp wc batch delete orders
+```
+
+Will delete all orders from the selected provider.
+
+Delete supports the same options as the update command.

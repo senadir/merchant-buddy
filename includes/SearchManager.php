@@ -129,14 +129,14 @@ class SearchManager {
 		if ( ! isset( $providers[ $selected_provider ] ) || ! class_exists( $providers[ $selected_provider ] ) ) {
 			$this->provider = new $providers['default']();
 			$this->notices->add_notice( sprintf( 'WooBuddy: %s provider not found, fallback to default', $selected_provider ), 'error' );
-			update_option( 'woo_buddy_search_provider', 'default' );
+			update_option( array_merge( $this->settings, array( 'provider' => 'default' ) ) );
 			return;
 		}
 
 		if ( ! class_exists( $providers[ $selected_provider ] ) || ! in_array( ProviderInterface::class, class_implements( $providers[ $selected_provider ] ), true ) ) {
 			$this->provider = new $providers['default']();
 			$this->notices->add_notice( sprintf( 'WooBuddy: %s provider does not implement ProviderInterface, fallback to default', $selected_provider ), 'error' );
-			update_option( 'woo_buddy_search_provider', 'default' );
+			update_option( array_merge( $this->settings, array( 'provider' => 'default' ) ) );
 			return;
 		}
 
@@ -145,14 +145,14 @@ class SearchManager {
 		} catch ( \Exception $e ) {
 			$this->provider = new $providers['default']();
 			$this->notices->add_notice( sprintf( 'WooBuddy: Initiating %s provider failed with error: %s, fallback to default', $selected_provider, $e->getMessage() ), 'error' );
-			update_option( 'woo_buddy_search_provider', 'default' );
+			update_option( array_merge( $this->settings, array( 'provider' => 'default' ) ) );
 			return;
 		}
 
 		if ( ! $this->provider->is_ready() ) {
 			$this->provider = new $providers['default']();
 			$this->notices->add_notice( sprintf( 'WooBuddy: %s provider is not ready, fallback to default', $selected_provider ), 'error' );
-			update_option( 'woo_buddy_search_provider', 'default' );
+			update_option( array_merge( $this->settings, array( 'provider' => 'default' ) ) );
 			return;
 		}
 		return true;
