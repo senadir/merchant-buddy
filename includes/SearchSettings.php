@@ -242,7 +242,7 @@ class SearchSettings extends WC_Integration {
 								'properties' => $this->get_provider_fields_schema( $provider::get_fields() ),
 							),
 						),
-						'sanitize_callback' => function ( $value ) {
+						'sanitize_callback' => function ( $value ) use ( $provider ) {
 							return wp_parse_args(
 								$value,
 								get_option( $provider::get_option_name(), array() )

@@ -62,7 +62,7 @@ class Algolia implements ProviderInterface, Batchable {
 	 * @return bool
 	 */
 	public function is_ready(): bool {
-		return true;
+		return isset( $this->settings['application_id'] ) && isset( $this->settings['admin_api_key'] );
 	}
 
 	/**
