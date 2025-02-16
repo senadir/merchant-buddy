@@ -1,6 +1,5 @@
 import { Command, useCommandState } from 'cmdk';
 import {
-	createPortal,
 	useMemo,
 	useEffect,
 	useState,
@@ -19,6 +18,7 @@ import {
 	preloadUrl,
 	isValidUrl,
 } from './utils';
+import { Portal } from './portal';
 import { LoadingIcon } from './loading-icon';
 import { sprintf, __ } from '@wordpress/i18n';
 const EntityList = () => {
@@ -69,7 +69,7 @@ const EntityList = () => {
 				</Command.Empty>
 			)}
 
-			{createPortal(
+			<Portal target=".search-buddy-input-portal">
 				<CSSTransition
 					in={isFetching}
 					timeout={800}
@@ -113,9 +113,8 @@ const EntityList = () => {
 					}}
 				>
 					<LoadingIcon ref={loadingIconRef} />
-				</CSSTransition>,
-				document.querySelector('.search-buddy-input-portal')!
-			)}
+				</CSSTransition>
+			</Portal>
 			{items &&
 				items.map((item) => (
 					<EntityItem
@@ -165,7 +164,7 @@ const EntityItem = ({ entityKey, item }: { entityKey: string; item: any }) => {
 		let timeout: number;
 		let linkElement: HTMLLinkElement | null = null;
 		if (selected && isValidUrl(link)) {
-			timeout = setTimeout(() => {
+			timeout = window.setTimeout(() => {
 				linkElement = preloadUrl(link);
 			}, 50);
 		}

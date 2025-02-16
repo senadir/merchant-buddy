@@ -1,8 +1,8 @@
 import { SearchClient, searchClient } from '@algolia/client-search';
 import { Provider, Item } from './types';
 
-const algoliaAppId = window.searchBuddy?.algolia?.application_id || '';
-const algoliaSearchKey = window.searchBuddy?.algolia?.search_api_key || '';
+const algoliaAppId = window.searchBuddy?.provider?.application_id || '';
+const algoliaSearchKey = window.searchBuddy?.provider?.search_api_key || '';
 
 function parseFacetQuery(query: string) {
 	const facetMatches = query.match(/[+][^\s]+/g);

@@ -19,7 +19,7 @@
         "group": "Guides",
         "pages": [
           "guides/create-entity",
-          "guides/create-provider",
+          "guides/create-search-provider",
           "guides/create-template"
         ]
       },

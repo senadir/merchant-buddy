@@ -31,21 +31,24 @@ const CommandPalette = () => {
 	const placeholder = pages.at(-1)
 		? // translators: %s is the last page in the navigation stack
 			sprintf(__('Search %s…', 'merchant-buddy'), pages.at(-1))
-		: __('Select an entity to search', 'merchant-buddy');
+		: __('Select something to search', 'merchant-buddy');
 
 	// Sync up searchValue with route query params
 	const [searchParams, setSearchParams] = useSearchParams();
 	const searchValue = searchParams.get('search') || '';
 	const setSearchValue = (value: string) =>
 		setSearchParams({ search: value }, { replace: true });
-
+	const Component = window.searchBuddy.main.dialog ? Command.Dialog : Command;
 	return (
-		<Command.Dialog
+		<Component
 			loop
 			open={open}
 			onOpenChange={setOpen}
 			label={__('Global Command Menu', 'merchant-buddy')}
 			shouldFilter={!currentEntity}
+			className={
+				window.searchBuddy.main.dialog ? '' : 'search-buddy-mounted'
+			}
 			onKeyDown={(e) => {
 				if (
 					pages.length !== 0 &&
@@ -79,7 +82,7 @@ const CommandPalette = () => {
 				<Outlet />
 			</Command.List>
 			<CommandFooter />
-		</Command.Dialog>
+		</Component>
 	);
 };
 

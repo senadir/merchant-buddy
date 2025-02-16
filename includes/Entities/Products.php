@@ -179,7 +179,7 @@ class Products extends AbstractEntity implements Batchable {
 		$created_at = $product->get_date_created() ? $product->get_date_created()->getTimestamp() : strtotime( get_post_field( 'post_date', $product->get_id() ) );
 		$updated_at = $product->get_date_modified() ? $product->get_date_modified()->getTimestamp() : $created_at;
 
-		return array(
+		$data = array(
 			'id'               => $product->get_id(),
 			'name'             => $product->get_name(),
 			'url'              => $product->get_permalink(),
@@ -193,6 +193,8 @@ class Products extends AbstractEntity implements Batchable {
 			'created_at'       => $created_at,
 			'updated_at'       => $updated_at,
 		);
+
+		return apply_filters( 'woo_buddy_' . $this->get_entity_slug() . '_item_data', $data, $product );
 	}
 
 	/**
@@ -242,7 +244,7 @@ class Products extends AbstractEntity implements Batchable {
 	 */
 	private function get_product_image_url( $product ) {
 		$image_id = (int) $product->get_image_id();
-		return wp_get_attachment_image_url( $image_id, 'full' );
+		return wp_get_attachment_image_url( $image_id, 'thumbnail' );
 	}
 
 	/**
@@ -254,12 +256,7 @@ class Products extends AbstractEntity implements Batchable {
 	public function search( string $query ): array {
 		$data_store = \WC_Data_Store::load( 'product' );
 
-		// This is mostly to appease the type checker.
-		if ( ! method_exists( $data_store, 'search_products' ) ) {
-			return array();
-		}
-
-		$product_ids = $data_store->search_products( $query, '', false, true, 5 );
+		$product_ids = $data_store->search_products( $query, '', false, true, 10 );
 
 		return array_map(
 			array( $this, 'get_item_data' ),

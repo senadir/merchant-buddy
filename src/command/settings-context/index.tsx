@@ -26,8 +26,11 @@ type Settings = {
 	main: {
 		provider: string;
 		enabled: boolean;
+		initialEntries: string[];
+		initialIndex: number;
+		dialog: boolean;
 	};
-	[key: string]: Record<string, any>;
+	provider: Record<string, any>;
 };
 
 const SettingsContext = createContext<Settings>({
@@ -35,7 +38,11 @@ const SettingsContext = createContext<Settings>({
 	main: {
 		provider: 'default',
 		enabled: true,
+		initialEntries: ['/'],
+		initialIndex: 0,
+		dialog: true,
 	},
+	provider: {},
 });
 
 const useSettings = (): Settings => {

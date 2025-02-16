@@ -1,7 +1,9 @@
 {
-  "name": "algolia-search",
+  "name": "merchant-buddy",
   "version": "1.0.0",
-  "description": "",
+  "description": "Merchant Buddy is a WooCommerce plugin that allows you to search for products, orders, and customers in the WordPress admin dashboard.",
+  "author": "Seghir Nadir",
+  "license": "GPL-2.0-or-later",
   "main": "src/index.js",
   "scripts": {
     "build": "wp-scripts build src/index.js src/settings.js src/providers/default.ts",
@@ -25,10 +27,11 @@
     "includes",
     "public",
     "vendor",
-    "algolia-search.php"
+    "merchant-buddy.php",
+    "readme.txt",
+    "LICENSE",
+    "composer.json"
   ],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@algolia/client-search": "^5.10.2",
     "@dnd-kit/core": "^6.1.0",

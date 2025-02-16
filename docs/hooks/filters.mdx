@@ -124,3 +124,26 @@ add_filter( 'woo_buddy_customers_searchable_fields', function( $searchable_field
     return $searchable_fields;
 });
 ```
+
+### `woo_buddy_{entity}_item_data`
+
+Filter the item data that will be passed to providers.
+
+#### Parameters
+
+<ParamField path="item_data" type="array">
+  Item data, depends on the entity.
+</ParamField>
+
+<ParamField path="item" type="object">
+  The item object, depends on the entity.
+</ParamField>
+
+#### Example
+
+```php
+add_filter( 'woo_buddy_orders_item_data', function( $item_data, $item ) {
+    $item_data['order_number'] = $item->get_order_number();
+    return $item_data;
+}, 10, 2 );
+```

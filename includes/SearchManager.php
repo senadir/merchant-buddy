@@ -74,7 +74,7 @@ class SearchManager {
 		$settings       = get_option(
 			'woo_buddy_main_settings',
 			array(
-				'enabled'  => false,
+				'enabled'  => 'yes',
 				'provider' => 'default',
 			)
 		);
@@ -98,7 +98,7 @@ class SearchManager {
 	 * @return bool
 	 */
 	public function is_enabled() {
-		return $this->get_setting( 'enabled', false );
+		return 'yes' === $this->get_setting( 'enabled', 'yes' );
 	}
 
 
@@ -217,7 +217,7 @@ class SearchManager {
 	private function load_scripts() {
 		if ( current_user_can( 'manage_options' ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_panel_scripts' ) );
-			if ( $this->get_setting( 'frontend', false ) ) {
+			if ( 'yes' === $this->get_setting( 'frontend', 'no' ) ) {
 				add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_panel_scripts' ) );
 			}
 		}
@@ -239,7 +239,7 @@ class SearchManager {
 			);
 		$script_url        = plugins_url( $script_path, __DIR__ );
 		wp_enqueue_script( 'search-buddy-panel', $script_url, $script_asset['dependencies'], $script_asset['version'], true );
-		wp_enqueue_style( 'search-buddy-panel', $plugin_url . 'build/index.css' );
+		wp_enqueue_style( 'search-buddy-panel', $plugin_url . 'build/index.css', array(), $script_asset['version'] );
 
 		wp_add_inline_script( 'search-buddy-panel', 'window.searchBuddy = ' . wp_json_encode( $this->get_script_data() ) . ';', 'before' );
 	}
@@ -385,8 +385,11 @@ class SearchManager {
 		$data = array(
 			'entities' => $entities_data,
 			'main'     => array(
-				'provider' => $this->provider->get_provider_slug(),
-				'enabled'  => $this->get_setting( 'enabled', false ),
+				'provider'       => $this->provider->get_provider_slug(),
+				'enabled'        => $this->is_enabled(),
+				'initialEntries' => array( '/' ),
+				'initialIndex'   => 0,
+				'dialog'         => apply_filters( '_internal_woo_buddy_dialog', true ), // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 			),
 		);
 
@@ -408,7 +411,7 @@ class SearchManager {
 				array()
 			);
 
-			$data[ $this->provider->get_provider_slug() ] = $provider_data;
+			$data['provider'] = $provider_data;
 		}
 
 		return $data;

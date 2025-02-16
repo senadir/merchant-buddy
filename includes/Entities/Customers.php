@@ -195,12 +195,7 @@ class Customers extends AbstractEntity implements Batchable {
 	public function search( string $query ): array {
 		$data_store = \WC_Data_Store::load( 'customer' );
 
-		// This is mostly to appease the type checker.
-		if ( ! method_exists( $data_store, 'search_customers' ) ) {
-			return array();
-		}
-
-		$customer_ids = $data_store->search_customers( $query, 5 );
+		$customer_ids = $data_store->search_customers( $query, 10 );
 
 		return array_map(
 			array( $this, 'get_item_data' ),
@@ -224,7 +219,7 @@ class Customers extends AbstractEntity implements Batchable {
 			return array();
 		}
 
-		return array(
+		$data = array(
 			'id'          => $item->get_id(),
 			'name'        => sprintf( '%s %s', $item->get_first_name(), $item->get_last_name() ),
 			'email'       => $item->get_email(),
@@ -254,5 +249,7 @@ class Customers extends AbstractEntity implements Batchable {
 				),
 			),
 		);
+
+		return apply_filters( 'woo_buddy_' . $this->get_entity_slug() . '_item_data', $data, $item );
 	}
 }

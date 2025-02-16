@@ -25,7 +25,7 @@ const SingleRowLayout = ({
 }) => {
 	return (
 		<>
-			<div className="group is-primary-image has-[img]:w-16 has-[img]:h-16">
+			<div className="group is-primary-image has-[img]:w-12 has-[img]:h-12">
 				<PrimaryImage primaryImage={primaryImage} />
 			</div>
 			<div className="text-sm text-ellipsis">{primaryText}</div>
@@ -47,7 +47,7 @@ const DoubleRowLayout = ({
 }) => {
 	return (
 		<>
-			<div className="group is-primary-image has-[img]:w-16 has-[img]:h-16">
+			<div className="group is-primary-image has-[img]:w-12 has-[img]:h-12">
 				<PrimaryImage primaryImage={primaryImage} />
 			</div>
 			<div className="flex flex-col items-stretch">

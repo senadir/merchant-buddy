@@ -104,7 +104,7 @@ class Orders extends AbstractEntity implements Batchable {
 	 */
 	public function search( string $query ): array {
 		$args = array(
-			'limit' => 5,
+			'limit' => 10,
 		);
 		// Extract email from query if it's prefixed with "email:".
 		if ( str_starts_with( $query, 'email:' ) ) {
@@ -222,7 +222,7 @@ class Orders extends AbstractEntity implements Batchable {
 		$created_at = $order->get_date_created() ? $order->get_date_created()->getTimestamp() : strtotime( get_post_field( 'post_date', $order->get_id() ) );
 		$updated_at = $order->get_date_modified() ? $order->get_date_modified()->getTimestamp() : $created_at;
 
-		return array(
+		$data = array(
 			'id'                   => $order->get_id(),
 			'order_number'         => sprintf( '#%s', $order->get_order_number() ),
 			'status'               => $order->get_status(),
@@ -240,6 +240,8 @@ class Orders extends AbstractEntity implements Batchable {
 			),
 			'updated_at'           => $updated_at,
 		);
+
+		return apply_filters( 'woo_buddy_' . $this->get_entity_slug() . '_item_data', $data, $order );
 	}
 
 	/**

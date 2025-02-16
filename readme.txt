@@ -1,6 +1,6 @@
 === Merchant Buddy ===
 Contributors: assassinateur
-Tags: woocommerce, search, orders, products, customers, algolia, performance
+Tags: woocommerce, search, algolia, admin
 Requires at least: 6.4
 Tested up to: 6.7.1
 Stable tag: 1.0.0

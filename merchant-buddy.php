@@ -12,9 +12,9 @@
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: merchant-buddy
- * Domain Path: /languages
  * WC requires at least: 9.3.0
  * WC tested up to: 9.6.1
+ * Requires Plugins: woocommerce
  *
  * @package MerchantBuddy
  */
@@ -44,6 +44,21 @@ add_action(
 	function () {
 		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
 			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		}
+	}
+);
+
+// Check if WooCommerce is installed and active
+add_action(
+	'plugins_loaded',
+	function () {
+		if ( ! class_exists( 'woocommerce' ) ) {
+			add_action(
+				'admin_notices',
+				function () {
+						echo '<div class="error"><p>Merchant Buddy requires WooCommerce to be installed and enabled.</p></div>';
+				}
+			);
 		}
 	}
 );

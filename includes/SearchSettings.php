@@ -186,6 +186,14 @@ class SearchSettings extends WC_Integration {
 						),
 					),
 				),
+				'sanitize_callback' => function ( $value ) {
+					$existing = get_option('woo_buddy_main_settings', array());
+					$sanitized = array(
+						'enabled' => isset($value['enabled']) ? sanitize_text_field($value['enabled']) : 'no',
+						'provider' => isset($value['provider']) ? sanitize_text_field($value['provider']) : ''
+					);
+					return array_merge($existing, $sanitized);
+				},
 			)
 		);
 		register_setting(
@@ -204,6 +212,9 @@ class SearchSettings extends WC_Integration {
 						),
 					),
 				),
+				'sanitize_callback' => function ( $value ) {
+					return array_map( 'sanitize_text_field', $value );
+				},
 			)
 		);
 
@@ -231,6 +242,12 @@ class SearchSettings extends WC_Integration {
 								'properties' => $this->get_provider_fields_schema( $provider::get_fields() ),
 							),
 						),
+						'sanitize_callback' => function ( $value ) {
+							return wp_parse_args(
+								$value,
+								get_option( $provider::get_option_name(), array() )
+							);
+						},
 					)
 				);
 			}
