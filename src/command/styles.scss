@@ -2,9 +2,10 @@
 
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
-// @import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 
+// @TODO: Move all of this to tailwindcss
 //Brand colors
 :root {
   --mint-cream: #f5fff5;
