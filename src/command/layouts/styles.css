@@ -1,10 +1,23 @@
 .primary-image {
   width: 48px;
   height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.primary-image:has(svg) {
+  width: 32px;
+  height: 32px;
 }
 
 .primary-image img {
   mix-blend-mode: multiply;
+}
+
+.primary-image svg {
+  width: 24px;
+  height: 24px;
 }
 
 .layout-text {
