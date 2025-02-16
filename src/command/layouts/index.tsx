@@ -1,4 +1,5 @@
 import { IconElement } from '../icon';
+import './styles.css';
 
 const PrimaryImage = ({ primaryImage }: { primaryImage: string }) => {
 	if (primaryImage.startsWith('icon:')) {
@@ -6,11 +7,7 @@ const PrimaryImage = ({ primaryImage }: { primaryImage: string }) => {
 		return <IconElement value={icon} />;
 	}
 	return (
-		<img
-			className="group-[.is-primary-image]:mix-blend-multiply"
-			src={primaryImage}
-			alt={primaryImage}
-		/>
+		<img className="primary-image" src={primaryImage} alt={primaryImage} />
 	);
 };
 
@@ -25,11 +22,11 @@ const SingleRowLayout = ({
 }) => {
 	return (
 		<>
-			<div className="group is-primary-image has-[img]:w-12 has-[img]:h-12">
+			<div className="primary-image">
 				<PrimaryImage primaryImage={primaryImage} />
 			</div>
-			<div className="text-sm text-ellipsis">{primaryText}</div>
-			<div className="text-xs text-ellipsis">
+			<div className="layout-text">{primaryText}</div>
+			<div className="layout-secondary-text">
 				{secondaryText.join(', ')}
 			</div>
 		</>
@@ -47,12 +44,12 @@ const DoubleRowLayout = ({
 }) => {
 	return (
 		<>
-			<div className="group is-primary-image has-[img]:w-12 has-[img]:h-12">
+			<div className="primary-image">
 				<PrimaryImage primaryImage={primaryImage} />
 			</div>
-			<div className="flex flex-col items-stretch">
-				<div className="text-sm text-ellipsis">{primaryText}</div>
-				<div className="text-xs text-ellipsis">
+			<div className="layout-flex-col">
+				<div className="layout-text">{primaryText}</div>
+				<div className="layout-secondary-text">
 					{secondaryText.join(', ')}
 				</div>
 			</div>
@@ -68,9 +65,9 @@ const DoubleRowNoMediaLayout = ({
 	secondaryText: string[];
 }) => {
 	return (
-		<div className="flex flex-col items-stretch">
-			<div className="text-sm text-ellipsis">{primaryText}</div>
-			<div className="text-xs text-ellipsis">
+		<div className="layout-flex-col">
+			<div className="layout-text">{primaryText}</div>
+			<div className="layout-secondary-text">
 				{secondaryText.join(', ')}
 			</div>
 		</div>

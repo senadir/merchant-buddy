@@ -38,12 +38,29 @@ const CommandPalette = () => {
 	const searchValue = searchParams.get('search') || '';
 	const setSearchValue = (value: string) =>
 		setSearchParams({ search: value }, { replace: true });
-	const Component = window.searchBuddy.main.dialog ? Command.Dialog : Command;
+	const Component = ({
+		children,
+		...props
+	}: { children: React.ReactNode } & React.ComponentProps<typeof Command>) =>
+		window.searchBuddy.main.dialog ? (
+			<Command.Dialog
+				open={open}
+				onOpenChange={setOpen}
+				container={
+					document.querySelector(
+						'.merchant-buddy-container'
+					) as HTMLElement
+				}
+				{...props}
+			>
+				{children}
+			</Command.Dialog>
+		) : (
+			<Command {...props}>{children}</Command>
+		);
 	return (
 		<Component
 			loop
-			open={open}
-			onOpenChange={setOpen}
 			label={__('Global Command Menu', 'merchant-buddy')}
 			shouldFilter={!currentEntity}
 			className={
