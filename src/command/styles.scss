@@ -1,5 +1,9 @@
 @use "sass:math";
-@import "tailwindcss";
+
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+// @import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
 
 //Brand colors
 :root {
@@ -120,385 +124,385 @@
     .dark & {
       background: hsla(0, 0%, 9%, 0.7);
     }
-  }
 
-  input[type="text"][cmdk-input] {
-    font-family: var(--font-sans);
-    border: none;
-    width: 100%;
-    font-size: 17px;
-    padding: 8px 8px 16px;
-    outline: none;
-    background: var(--bg);
-    color: var(--gray12);
-    border-bottom: 1px solid var(--gray6);
-    margin-bottom: 16px;
-    border-radius: 0;
+    input[type="text"][cmdk-input] {
+      font-family: var(--font-sans);
+      border: none;
+      width: 100%;
+      font-size: 17px;
+      padding: 8px 8px 16px;
+      outline: none;
+      background: var(--bg);
+      color: var(--gray12);
+      border-bottom: 1px solid var(--gray6);
+      margin-bottom: 16px;
+      border-radius: 0;
 
-    &:focus {
-      box-shadow: none;
+      &:focus {
+        box-shadow: none;
+      }
     }
-  }
 
-  [cmdk-input]::-moz-placeholder {
-    color: var(--gray9);
-  }
-
-  [cmdk-input]:-ms-input-placeholder {
-    color: var(--gray9);
-  }
-
-  [cmdk-input]::placeholder {
-    color: var(--gray9);
-  }
-
-  [cmdk-vercel-badge] {
-    height: 20px;
-    background: var(--grayA3);
-    display: inline-flex;
-    padding: 0 8px;
-    font-size: 12px;
-    color: var(--grayA11);
-    border-radius: 4px;
-    margin: 4px 0 4px 4px;
-    text-transform: capitalize;
-    font-weight: 500;
-  }
-
-  [cmdk-item],
-  [cmdk-vercel-badge] {
-    align-items: center;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-
-  [cmdk-item] {
-    content-visibility: auto;
-    cursor: pointer;
-    height: 48px;
-    border-radius: 8px;
-    font-size: 14px;
-    display: flex;
-    gap: 8px;
-    padding: 0 8px;
-    color: var(--gray11);
-    will-change: background, color;
-    transition: all 0.15s ease;
-    transition-property: none;
-  }
-
-  [cmdk-item] .product-image {
-    aspect-ratio: 1;
-    width: 50px;
-    height: 50px;
-    vertical-align: middle;
-    margin-inline-end: 12px;
-    mix-blend-mode: multiply;
-  }
-
-  [cmdk-item][data-selected="true"] {
-    background: var(--grayA3);
-    color: var(--gray12);
-  }
-
-  [cmdk-item] .special-command {
-    display: none;
-  }
-
-  [cmdk-item][data-selected="true"] .special-command {
-    display: block;
-  }
-
-  [cmdk-item][data-disabled="true"] {
-    color: var(--gray8);
-    cursor: not-allowed;
-  }
-
-  [cmdk-item]:active {
-    transition-property: background;
-    background: var(--gray4);
-  }
-
-  [cmdk-item] + [cmdk-item] {
-    margin-top: 4px;
-  }
-
-  [cmdk-item] svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  [cmdk-list] {
-    height: min(330px, var(--cmdk-list-height));
-    max-height: 400px;
-    overflow: auto;
-    -ms-scroll-chaining: none;
-    overscroll-behavior: contain;
-    transition: 0.1s ease;
-    transition-property: height;
-
-    // Add these styles when .command-footer is present
-    &:has(+ .command-footer) {
-      margin-bottom: 8px;
+    [cmdk-input]::-moz-placeholder {
+      color: var(--gray9);
     }
-  }
 
-  [cmdk-vercel-shortcuts] {
-    display: flex;
-    margin-left: auto;
-    gap: 8px;
-  }
+    [cmdk-input]:-ms-input-placeholder {
+      color: var(--gray9);
+    }
 
-  kbd {
-    font-family: var(--font-sans);
-    font-size: 10px;
-    min-width: 16px;
-    padding: 2px;
-    height: 16px;
-    border-radius: 4px;
-    color: var(--gray11);
-    background: var(--gray4);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-transform: uppercase;
-  }
+    [cmdk-input]::placeholder {
+      color: var(--gray9);
+    }
 
-  [cmdk-separator] {
-    height: 1px;
-    width: 100%;
-    background: var(--gray5);
-    margin: 4px 0;
-  }
+    [cmdk-vercel-badge] {
+      height: 20px;
+      background: var(--grayA3);
+      display: inline-flex;
+      padding: 0 8px;
+      font-size: 12px;
+      color: var(--grayA11);
+      border-radius: 4px;
+      margin: 4px 0 4px 4px;
+      text-transform: capitalize;
+      font-weight: 500;
+    }
 
-  :not([hidden]) + [cmdk-group] {
-    margin-top: 8px;
-  }
+    [cmdk-item],
+    [cmdk-vercel-badge] {
+      align-items: center;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
 
-  [cmdk-group-heading] {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    font-size: 12px;
-    padding: 0 8px;
-    margin-bottom: 8px;
-  }
+    [cmdk-item] {
+      content-visibility: auto;
+      cursor: pointer;
+      height: 48px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: flex;
+      gap: 8px;
+      padding: 0 8px;
+      color: var(--gray11);
+      will-change: background, color;
+      transition: all 0.15s ease;
+      transition-property: none;
+    }
 
-  [cmdk-empty],
-  [cmdk-group-heading] {
-    color: var(--gray11);
-    display: flex;
-    align-items: center;
-  }
+    [cmdk-item] .product-image {
+      aspect-ratio: 1;
+      width: 50px;
+      height: 50px;
+      vertical-align: middle;
+      margin-inline-end: 12px;
+      mix-blend-mode: multiply;
+    }
 
-  [cmdk-empty] {
-    font-size: 14px;
-    justify-content: center;
-    height: 48px;
-    white-space: pre-wrap;
-  }
+    [cmdk-item][data-selected="true"] {
+      background: var(--grayA3);
+      color: var(--gray12);
+    }
 
-  .search-buddy-input-wrapper {
-    position: relative;
-    box-sizing: border-box;
-  }
+    [cmdk-item] .special-command {
+      display: none;
+    }
 
-  .search-buddy-input-portal {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 48px;
-    height: 48px;
-  }
+    [cmdk-item][data-selected="true"] .special-command {
+      display: block;
+    }
 
-  .command-item-actions {
-    position: absolute;
-    right: 8px;
-  }
+    [cmdk-item][data-disabled="true"] {
+      color: var(--gray8);
+      cursor: not-allowed;
+    }
 
-  .command-footer {
-    display: flex;
-    flex-direction: row-reverse;
-    gap: 8px;
-    height: 40px;
-    align-items: center;
-    background: var(--gray1);
-    bottom: 0;
-    left: 0;
-    box-sizing: border-box;
-    padding: 8px;
-    border-top: 1px solid var(--gray6);
-    border-radius: 0 0 12px 12px;
-    font-size: 11px;
-    margin: 0 -8px -8px;
+    [cmdk-item]:active {
+      transition-property: background;
+      background: var(--gray4);
+    }
 
-    svg {
+    [cmdk-item] + [cmdk-item] {
+      margin-top: 4px;
+    }
+
+    [cmdk-item] svg {
       width: 20px;
       height: 20px;
-      filter: grayscale(1);
-      margin-right: auto;
     }
 
-    hr {
-      height: 12px;
-      width: 1px;
-      border: 0;
-      background: var(--gray6);
-      margin: 0 4px 0px 12px;
+    [cmdk-list] {
+      height: min(330px, var(--cmdk-list-height));
+      max-height: 400px;
+      overflow: auto;
+      -ms-scroll-chaining: none;
+      overscroll-behavior: contain;
+      transition: 0.1s ease;
+      transition-property: height;
+
+      // Add these styles when .command-footer is present
+      &:has(+ .command-footer) {
+        margin-bottom: 8px;
+      }
+    }
+
+    [cmdk-vercel-shortcuts] {
+      display: flex;
+      margin-left: auto;
+      gap: 8px;
     }
 
     kbd {
-      margin-left: 4px;
+      font-family: var(--font-sans);
+      font-size: 10px;
+      min-width: 16px;
+      padding: 2px;
+      height: 16px;
+      border-radius: 4px;
+      color: var(--gray11);
+      background: var(--gray4);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
     }
 
-    @media (prefers-color-scheme: dark) {
-      background: var(--gray2);
+    [cmdk-separator] {
+      height: 1px;
+      width: 100%;
+      background: var(--gray5);
+      margin: 4px 0;
     }
-  }
 
-  // We want to remove the padding and borders only when we're not showing any results already.
-  .has-collapsed-input:has(+ [cmdk-list] [cmdk-list-sizer]:empty) {
-    input[type="text"][cmdk-input] {
+    :not([hidden]) + [cmdk-group] {
+      margin-top: 8px;
+    }
+
+    [cmdk-group-heading] {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      font-size: 12px;
+      padding: 0 8px;
+      margin-bottom: 8px;
+    }
+
+    [cmdk-empty],
+    [cmdk-group-heading] {
+      color: var(--gray11);
+      display: flex;
+      align-items: center;
+    }
+
+    [cmdk-empty] {
+      font-size: 14px;
+      justify-content: center;
+      height: 48px;
+      white-space: pre-wrap;
+    }
+
+    .search-buddy-input-wrapper {
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .search-buddy-input-portal {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 48px;
+      height: 48px;
+    }
+
+    .command-item-actions {
+      position: absolute;
+      right: 8px;
+    }
+
+    .command-footer {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 8px;
+      height: 40px;
+      align-items: center;
+      background: var(--gray1);
+      bottom: 0;
+      left: 0;
+      box-sizing: border-box;
       padding: 8px;
-      margin-bottom: 0;
-      border-bottom: none;
+      border-top: 1px solid var(--gray6);
+      border-radius: 0 0 12px 12px;
+      font-size: 11px;
+      margin: 0 -8px -8px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        filter: grayscale(1);
+        margin-right: auto;
+      }
+
+      hr {
+        height: 12px;
+        width: 1px;
+        border: 0;
+        background: var(--gray6);
+        margin: 0 4px 0px 12px;
+      }
+
+      kbd {
+        margin-left: 4px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        background: var(--gray2);
+      }
     }
-  }
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    aspect-ratio: 1;
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
-
-  .icon {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    aspect-ratio: 1;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    svg {
-      width: 20px;
-      height: 20px;
+    // We want to remove the padding and borders only when we're not showing any results already.
+    .has-collapsed-input:has(+ [cmdk-list] [cmdk-list-sizer]:empty) {
+      input[type="text"][cmdk-input] {
+        padding: 8px;
+        margin-bottom: 0;
+        border-bottom: none;
+      }
     }
-  }
 
-  $base-size: 40px; // Base size variable to control overall scaling
-
-  .pinot {
-    color: currentColor;
-    //color: rgba(red. 0.5);
-    width: $base-size;
-    height: $base-size;
-    box-sizing: border-box;
-    position: relative;
-    opacity: 0;
-  }
-
-  .pinot.loading {
-    transition: opacity 0.2s ease-out 0.5s;
-    opacity: 1;
-  }
-
-  .circle {
-    $size: $base-size * 0.5; // 20px -> 50% of base
-    width: $size;
-    height: $size;
-    border: $base-size * 0.05 solid currentColor; // 2px -> 5% of base
-    border-radius: 9999px;
-    position: absolute;
-    left: calc(50% - math.div($size, 2));
-    top: calc(50% - math.div($size, 2));
-    background-color: white;
-    box-sizing: border-box;
-  }
-
-  .small-circles {
-    width: 100%;
-    height: 100%;
-    transform: rotate(0);
-    transition: transform 0.3s ease;
-    box-sizing: border-box;
-  }
-  $size: $base-size * 0.45; // 18px -> 45% of base
-  .small-circle {
-    width: $size;
-    height: $size;
-    border: $base-size * 0.0375 solid currentColor; // 1.5px -> 3.75% of base
-    border-radius: 9999px;
-    position: absolute;
-    left: calc(50% - math.div($size, 2));
-    top: calc(50% - math.div($size, 2));
-    background-color: white;
-    transition: transform 0.3s ease;
-    box-sizing: border-box;
-  }
-
-  .pinot.spinning .small-circle {
-    transform: translate(0, 0);
-  }
-
-  .pinot.spinning .small-circles {
-    animation: 0.3s linear 0.7s rotate infinite;
-  }
-
-  $offset: $base-size * 0.2; // 8px -> 20% of base
-  .small-circle:nth-of-type(1) {
-    left: calc(50% - math.div($size, 2) - $offset);
-    top: calc(50% - math.div($size, 2) - $offset);
-    transform: translate($offset, $offset);
-    transition-delay: 0s;
-  }
-
-  .small-circle:nth-of-type(2) {
-    left: calc(50% - math.div($size, 2) + $offset);
-    top: calc(50% - math.div($size, 2) - $offset);
-    transform: translate(-$offset, $offset);
-    transition-delay: 0.1s;
-  }
-
-  .small-circle:nth-of-type(3) {
-    left: calc(50% - math.div($size, 2) - $offset);
-    top: calc(50% - math.div($size, 2) + $offset);
-    transform: translate($offset, -$offset);
-    transition-delay: 0.2s;
-  }
-
-  .small-circle:nth-of-type(4) {
-    left: calc(50% - math.div($size, 2) + $offset);
-    top: calc(50% - math.div($size, 2) + $offset);
-    transform: translate(-$offset, -$offset);
-    transition-delay: 0.3s;
-  }
-
-  @keyframes rotate {
-    0% {
-      transform: rotate(0);
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      aspect-ratio: 1;
+      border-radius: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
     }
-    100% {
-      transform: rotate(0.5turn);
-    }
-  }
 
-  @keyframes fadeIn {
-    from {
+    .icon {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    $base-size: 40px; // Base size variable to control overall scaling
+
+    .pinot {
+      color: currentColor;
+      //color: rgba(red. 0.5);
+      width: $base-size;
+      height: $base-size;
+      box-sizing: border-box;
+      position: relative;
       opacity: 0;
     }
-    to {
+
+    .pinot.loading {
+      transition: opacity 0.2s ease-out 0.5s;
       opacity: 1;
+    }
+
+    .circle {
+      $size: $base-size * 0.5; // 20px -> 50% of base
+      width: $size;
+      height: $size;
+      border: $base-size * 0.05 solid currentColor; // 2px -> 5% of base
+      border-radius: 9999px;
+      position: absolute;
+      left: calc(50% - math.div($size, 2));
+      top: calc(50% - math.div($size, 2));
+      background-color: white;
+      box-sizing: border-box;
+    }
+
+    .small-circles {
+      width: 100%;
+      height: 100%;
+      transform: rotate(0);
+      transition: transform 0.3s ease;
+      box-sizing: border-box;
+    }
+    $size: $base-size * 0.45; // 18px -> 45% of base
+    .small-circle {
+      width: $size;
+      height: $size;
+      border: $base-size * 0.0375 solid currentColor; // 1.5px -> 3.75% of base
+      border-radius: 9999px;
+      position: absolute;
+      left: calc(50% - math.div($size, 2));
+      top: calc(50% - math.div($size, 2));
+      background-color: white;
+      transition: transform 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .pinot.spinning .small-circle {
+      transform: translate(0, 0);
+    }
+
+    .pinot.spinning .small-circles {
+      animation: 0.3s linear 0.7s rotate infinite;
+    }
+
+    $offset: $base-size * 0.2; // 8px -> 20% of base
+    .small-circle:nth-of-type(1) {
+      left: calc(50% - math.div($size, 2) - $offset);
+      top: calc(50% - math.div($size, 2) - $offset);
+      transform: translate($offset, $offset);
+      transition-delay: 0s;
+    }
+
+    .small-circle:nth-of-type(2) {
+      left: calc(50% - math.div($size, 2) + $offset);
+      top: calc(50% - math.div($size, 2) - $offset);
+      transform: translate(-$offset, $offset);
+      transition-delay: 0.1s;
+    }
+
+    .small-circle:nth-of-type(3) {
+      left: calc(50% - math.div($size, 2) - $offset);
+      top: calc(50% - math.div($size, 2) + $offset);
+      transform: translate($offset, -$offset);
+      transition-delay: 0.2s;
+    }
+
+    .small-circle:nth-of-type(4) {
+      left: calc(50% - math.div($size, 2) + $offset);
+      top: calc(50% - math.div($size, 2) + $offset);
+      transform: translate(-$offset, -$offset);
+      transition-delay: 0.3s;
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(0);
+      }
+      100% {
+        transform: rotate(0.5turn);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
   }
 }
