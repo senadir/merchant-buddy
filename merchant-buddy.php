@@ -3,7 +3,7 @@
  * Plugin Name: Merchant Buddy
  * Plugin URI: https://merchant-buddy.com/
  * Description: Instantly available search palette for WooCommerce with instant search and keyboard shortcuts.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires at least: 6.4
  * Tested up to: 6.7.1
  * Requires PHP: 7.4

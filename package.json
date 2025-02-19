@@ -1,6 +1,6 @@
 {
   "name": "merchant-buddy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Merchant Buddy is a WooCommerce plugin that allows you to search for products, orders, and customers in the WordPress admin dashboard.",
   "author": "Seghir Nadir",
   "license": "GPL-2.0-or-later",

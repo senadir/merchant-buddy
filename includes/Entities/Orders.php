@@ -109,12 +109,14 @@ class Orders extends AbstractEntity implements Batchable {
 		// Extract email from query if it's prefixed with "email:".
 		if ( str_starts_with( $query, 'email:' ) ) {
 			$parts                 = explode( ' ', $query, 2 );
-			$email                 = substr( $parts[0], 6 );
-			$args['billing_email'] = $email;
+			$email                 = trim( substr( $parts[0], 6 ) ); // Trim whitespace from email
+			if ( ! empty( $email ) ) { // Only set billing_email if not empty
+				$args['billing_email'] = sanitize_email( $email ); // Sanitize email
+			}
 			// Use the rest of the query (if any) for the 's' parameter
-			$args['s'] = isset( $parts[1] ) ? $parts[1] : '';
+			$args['s'] = isset( $parts[1] ) ? trim( $parts[1] ) : '';
 		} else {
-			$args['s'] = $query;
+			$args['s'] = trim( $query ); // Trim whitespace from general search query
 		}
 
 		$query = new \WC_Order_Query( $args );
