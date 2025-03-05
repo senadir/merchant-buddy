@@ -50,9 +50,8 @@ class SearchManager {
 	 *
 	 * Loads the search provider based on the selected option.
 	 */
-	public function __construct() {
-		// @todo: inject this instead.
-		$this->notices = new AdminNotice();
+	public function __construct(AdminNotice $notices) {
+		$this->notices = $notices;
 		$this->load_settings();
 		$this->load_provider();
 		$this->load_entities();
@@ -413,6 +412,7 @@ class SearchManager {
 			'main'     => array(
 				'provider'       => $this->provider->get_provider_slug(),
 				'enabled'        => $this->is_enabled(),
+				'shortcut'       => $this->get_setting( 'shortcut', 'command+k,ctrl+k' ),
 				'initialEntries' => array( '/' ),
 				'initialIndex'   => 0,
 				'dialog'         => apply_filters( 'merchant_buddy_internal_dialog', true ), // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment

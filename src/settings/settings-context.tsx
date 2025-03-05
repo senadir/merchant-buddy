@@ -99,15 +99,20 @@ export const SettingsProvider = ({
 
   const save = useCallback(() => {
     const data: {
-      merchant_buddy_main_settings: { enabled: string; provider: string };
-      merchant_buddy_enabled_entities: string[];
+      woo_buddy_main_settings: {
+        enabled: string;
+        provider: string;
+        shortcut: string;
+      };
+      woo_buddy_enabled_entities: string[];
       [key: string]: unknown;
     } = {
-      merchant_buddy_main_settings: {
+      woo_buddy_main_settings: {
         enabled: settings.enabled ? "yes" : "no",
         provider: settings.provider,
+        shortcut: settings.shortcut || "Cmd+K",
       },
-      merchant_buddy_enabled_entities: entities
+      woo_buddy_enabled_entities: entities
         .filter((entity) => entity.enabled)
         .map((entity) => entity.key),
     };
@@ -133,7 +138,14 @@ export const SettingsProvider = ({
 
     // @todo This should be improved to include error handling in case of API failure, or invalid data being sent that
     // does not match the schema. This would fail silently on the API side.
-    apiFetch({
+    apiFetch<{
+      woo_buddy_main_settings: {
+        enabled: string;
+        provider: string;
+        shortcut: string;
+      };
+      woo_buddy_enabled_entities: string[];
+    }>({
       path: "/wp/v2/settings",
       method: "POST",
       data,
@@ -141,12 +153,12 @@ export const SettingsProvider = ({
       setIsSaving(false);
       if (
         fastDeepEqual(
-          response.merchant_buddy_main_settings,
-          data.merchant_buddy_main_settings,
+          response.woo_buddy_main_settings,
+          data.woo_buddy_main_settings,
         ) &&
         fastDeepEqual(
-          response.merchant_buddy_enabled_entities,
-          data.merchant_buddy_enabled_entities,
+          response.woo_buddy_enabled_entities,
+          data.woo_buddy_enabled_entities,
         )
       ) {
         dispatch("core/notices").createSuccessNotice(

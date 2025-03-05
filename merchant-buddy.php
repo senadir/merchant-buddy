@@ -24,6 +24,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'MERCHANT_BUDDY_BASENAME', plugin_basename( __FILE__ ) );
+define( 'MERCHANT_BUDDY_VERSION', '1.0.1' );
+define( 'MERCHANT_BUDDY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 // Add compatibility with WooCommerce HPOS
 add_action(
@@ -46,6 +48,21 @@ add_action(
 						echo '<div class="error"><p>Merchant Buddy requires WooCommerce to be installed and enabled.</p></div>';
 				}
 			);
+			return;
+		}
+
+		// Initialize the plugin
+		if ( file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
+			require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+			\Nadir\MerchantBuddy\Package::init();
+		} else {
+			// Handle the case where the autoloader is not found
+			add_action(
+				'admin_notices',
+				function () {
+					echo '<div class="error"><p>Merchant Buddy: Composer autoloader not found. Please run composer install.</p></div>';
+				}
+			);
 		}
 	}
 );
@@ -64,20 +81,3 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
 	return;
 }
 
-use Nadir\MerchantBuddy\SearchManager;
-use Nadir\MerchantBuddy\SearchSettings;
-// Initiate SearchManager
-add_action(
-	'plugins_loaded',
-	function () {
-		new SearchManager();
-	}
-);
-
-add_filter(
-	'woocommerce_integrations',
-	function ( $integrations ) {
-		$integrations[] = SearchSettings::class;
-		return $integrations;
-	}
-);

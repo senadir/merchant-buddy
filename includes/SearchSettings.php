@@ -67,6 +67,7 @@ class SearchSettings extends WC_Integration {
 			array(
 				'provider' => 'default',
 				'enabled'  => 'yes',
+				'shortcut' => 'Cmd+K',
 			)
 		);
 		$enabled_entities    = get_option( 'merchant_buddy_enabled_entities', array( 'orders', 'products', 'customers' ) );
@@ -116,8 +117,9 @@ class SearchSettings extends WC_Integration {
 		}
 		$settings = array(
 			'enabled'                => wc_string_to_bool( $main_settings['enabled'] ),
-			'provider'               => $main_settings['provider'],
+			'provider'               => $main_settings['provider'] ?? 'default',
 			'entities'               => $enabled_entities,
+			'shortcut'               => $main_settings['shortcut'] ?? 'Cmd+K',
 			'providerSettingsSchema' => $provider_settings_schema,
 			'providerSettings'       => $provider_settings,
 			'readonlySettings'       => array(
@@ -181,6 +183,10 @@ class SearchSettings extends WC_Integration {
 								'description' => __( 'This controls the search provider.', 'merchant-buddy' ),
 								'type'        => 'string',
 							),
+							'shortcut' => array(
+								'description' => __( 'The keyboard shortcut to open the command palette.', 'merchant-buddy' ),
+								'type'        => 'string',
+							),
 						),
 					),
 				),
@@ -189,6 +195,7 @@ class SearchSettings extends WC_Integration {
 					$sanitized = array(
 						'enabled'  => isset( $value['enabled'] ) ? sanitize_text_field( $value['enabled'] ) : 'no',
 						'provider' => isset( $value['provider'] ) ? sanitize_text_field( $value['provider'] ) : '',
+						'shortcut' => isset($value['shortcut']) ? sanitize_text_field($value['shortcut']) : 'Cmd+K',
 					);
 					return array_merge( $existing, $sanitized );
 				},
