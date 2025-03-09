@@ -10,7 +10,6 @@ use Nadir\MerchantBuddy\Providers\Algolia;
 use Nadir\MerchantBuddy\Providers\DefaultProvider;
 use Nadir\MerchantBuddy\Providers\Contracts\HasSettings;
 use Nadir\MerchantBuddy\Helpers\Classes;
-use WP_CLI;
 /**
  * SearchManager class
  *
@@ -55,14 +54,10 @@ class SearchManager {
 		// @todo: inject this instead.
 		$this->notices = new AdminNotice();
 		$this->load_settings();
-		if ( ! $this->is_enabled() ) {
-			return;
-		}
-
 		$this->load_provider();
 		$this->load_entities();
 		$this->load_scripts();
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		if ( defined( 'WP_CLI' ) ) {
 			$this->register_cli_commands();
 		}
 	}
@@ -72,7 +67,7 @@ class SearchManager {
 	 */
 	private function load_settings() {
 		$settings       = get_option(
-			'woo_buddy_main_settings',
+			'merchant_buddy_main_settings',
 			array(
 				'enabled'  => 'yes',
 				'provider' => 'default',
@@ -114,7 +109,7 @@ class SearchManager {
 		 * @since 1.0.0
 		 */
 		$providers = apply_filters(
-			'woo_buddy_available_providers',
+			'merchant_buddy_available_providers',
 			array(
 				'default' => DefaultProvider::class,
 				'algolia' => Algolia::class,
@@ -129,14 +124,14 @@ class SearchManager {
 		if ( ! isset( $providers[ $selected_provider ] ) || ! class_exists( $providers[ $selected_provider ] ) ) {
 			$this->provider = new $providers['default']();
 			$this->notices->add_notice( sprintf( 'WooBuddy: %s provider not found, fallback to default', $selected_provider ), 'error' );
-			update_option( array_merge( $this->settings, array( 'provider' => 'default' ) ) );
+			update_option( 'merchant_buddy_main_settings', array_merge( $this->settings, array( 'provider' => 'default' ) ) );
 			return;
 		}
 
 		if ( ! class_exists( $providers[ $selected_provider ] ) || ! in_array( ProviderInterface::class, class_implements( $providers[ $selected_provider ] ), true ) ) {
 			$this->provider = new $providers['default']();
 			$this->notices->add_notice( sprintf( 'WooBuddy: %s provider does not implement ProviderInterface, fallback to default', $selected_provider ), 'error' );
-			update_option( array_merge( $this->settings, array( 'provider' => 'default' ) ) );
+			update_option( 'merchant_buddy_main_settings', array_merge( $this->settings, array( 'provider' => 'default' ) ) );
 			return;
 		}
 
@@ -145,14 +140,14 @@ class SearchManager {
 		} catch ( \Exception $e ) {
 			$this->provider = new $providers['default']();
 			$this->notices->add_notice( sprintf( 'WooBuddy: Initiating %s provider failed with error: %s, fallback to default', $selected_provider, $e->getMessage() ), 'error' );
-			update_option( array_merge( $this->settings, array( 'provider' => 'default' ) ) );
+			update_option( 'merchant_buddy_main_settings', array_merge( $this->settings, array( 'provider' => 'default' ) ) );
 			return;
 		}
 
 		if ( ! $this->provider->is_ready() ) {
 			$this->provider = new $providers['default']();
 			$this->notices->add_notice( sprintf( 'WooBuddy: %s provider is not ready, fallback to default', $selected_provider ), 'error' );
-			update_option( array_merge( $this->settings, array( 'provider' => 'default' ) ) );
+			update_option( 'merchant_buddy_main_settings', array_merge( $this->settings, array( 'provider' => 'default' ) ) );
 			return;
 		}
 		return true;
@@ -171,7 +166,7 @@ class SearchManager {
 		 * @since 1.0.0
 		 */
 		return apply_filters(
-			'woo_buddy_available_entities',
+			'merchant_buddy_available_entities',
 			array(
 				'orders'    => Entities\Orders::class,
 				'products'  => Entities\Products::class,
@@ -187,7 +182,7 @@ class SearchManager {
 	 */
 	public function get_enabled_entities() {
 
-		$enabled_entities = get_option( 'woo_buddy_enabled_entities', array( 'orders', 'products', 'customers' ) );
+		$enabled_entities = get_option( 'merchant_buddy_enabled_entities', array( 'orders', 'products', 'customers' ) );
 
 		return array_intersect_key( $this->get_entities(), array_flip( $enabled_entities ) );
 	}
@@ -203,7 +198,7 @@ class SearchManager {
 				$this->entities[ $entity ] = new $entity_class( $this->provider );
 			} catch ( \Exception $e ) {
 				$this->notices->add_notice( sprintf( 'WooBuddy: Initiating %s entity failed with error: %s, disabling it.', $entity, $e->getMessage() ), 'error' );
-				update_option( 'woo_buddy_enabled_entities', array_diff( get_option( 'woo_buddy_enabled_entities' ), array( $entity ) ) );
+				update_option( 'merchant_buddy_enabled_entities', array_diff( get_option( 'merchant_buddy_enabled_entities' ), array( $entity ) ) );
 				continue;
 			}
 
@@ -231,24 +226,55 @@ class SearchManager {
 		$plugin_path       = plugin_dir_path( __DIR__ );
 		$script_path       = 'build/index.js';
 		$script_asset_path = 'build/index.asset.php';
-		$script_asset      = file_exists( $plugin_path . $script_asset_path ) // Update this line
-			? require $plugin_path . $script_asset_path // Update this line
+
+		// Check if build files exist
+		if ( ! file_exists( $plugin_path . $script_path ) ) {
+			return;
+		}
+
+		$script_asset = file_exists( $plugin_path . $script_asset_path )
+			? require $plugin_path . $script_asset_path
 			: array(
 				'dependencies' => array(),
-				'version'      => filemtime( $plugin_path . $script_path ), // Update this line
+				'version'      => filemtime( $plugin_path . $script_path ),
 			);
-		$script_url        = plugins_url( $script_path, __DIR__ );
-		wp_enqueue_script( 'search-buddy-panel', $script_url, $script_asset['dependencies'], $script_asset['version'], true );
-		wp_enqueue_style( 'search-buddy-panel', $plugin_url . 'build/index.css', array(), $script_asset['version'] );
 
-		wp_add_inline_script( 'search-buddy-panel', 'window.searchBuddy = ' . wp_json_encode( $this->get_script_data() ) . ';', 'before' );
+		$script_url = plugins_url( $script_path, __DIR__ );
+
+		// Enqueue main script and its dependencies
+		wp_enqueue_script(
+			'search-buddy-panel',
+			$script_url,
+			$script_asset['dependencies'],
+			$script_asset['version'],
+			true
+		);
+
+		// Enqueue styles if they exist
+		if ( file_exists( $plugin_path . 'build/index.css' ) ) {
+			wp_enqueue_style(
+				'search-buddy-panel',
+				$plugin_url . 'build/index.css',
+				array(),
+				$script_asset['version']
+			);
+		}
+
+		// Add script data
+		if ( wp_script_is( 'search-buddy-panel', 'registered' ) ) {
+			wp_add_inline_script(
+				'search-buddy-panel',
+				'window.searchBuddy = ' . wp_json_encode( $this->get_script_data() ) . ';',
+				'before'
+			);
+		}
 	}
 
 	/**
 	 * Register CLI commands for batch updates and deletes.
 	 */
 	public function register_cli_commands() {
-		WP_CLI::add_command( 'wc buddy batch', array( $this, 'batch_command' ) );
+		\WP_CLI::add_command( 'wc buddy batch', array( $this, 'batch_command' ) );
 	}
 
 	/**
@@ -271,7 +297,7 @@ class SearchManager {
 				$provider_instance = $this->switch_provider( $provider );
 				$changed_provider  = true;
 			} catch ( \Exception $e ) {
-				WP_CLI::error( 'Error switching provider: ' . $e->getMessage() );
+				\WP_CLI::error( 'Error switching provider: ' . $e->getMessage() );
 			}
 		} else {
 			$provider = $this->provider;
@@ -279,7 +305,7 @@ class SearchManager {
 
 		foreach ( $entities as $entity ) {
 			if ( ! isset( $this->entities[ $entity ] ) ) {
-				WP_CLI::warning( "Entity '$entity' not found or not enabled. Skipping." );
+				\WP_CLI::warning( "Entity '$entity' not found or not enabled. Skipping." );
 				continue;
 			}
 
@@ -298,7 +324,7 @@ class SearchManager {
 						$items = $entity_instance->get_items( $page, $per_page );
 						if ( ! empty( $items ) ) {
 							$provider->batch_update_items( $items, $entity );
-							WP_CLI::success( sprintf( 'Processed page %d of %s items', $page, $entity ) );
+							\WP_CLI::success( sprintf( 'Processed page %d of %s items', $page, $entity ) );
 						}
 					} elseif ( 'delete' === $method ) {
 						if ( \method_exists( $entity_instance, 'get_items_ids' ) ) {
@@ -314,13 +340,13 @@ class SearchManager {
 						}
 						if ( ! empty( $items ) ) {
 							$provider->batch_delete_items( $items, $entity );
-							WP_CLI::success( sprintf( 'Processed page %d of %s items', $page, $entity ) );
+							\WP_CLI::success( sprintf( 'Processed page %d of %s items', $page, $entity ) );
 						}
 					}
 					++$page;
 				} while ( ! empty( $items ) );
 			} else {
-				WP_CLI::error( 'Provider does not implement Batchable.' );
+				\WP_CLI::error( 'Provider does not implement Batchable.' );
 			}
 		}
 	}
@@ -339,7 +365,7 @@ class SearchManager {
 		 * @since 1.0.0
 		 */
 		$providers = apply_filters(
-			'woo_buddy_available_providers',
+			'merchant_buddy_available_providers',
 			array(
 				'default' => DefaultProvider::class,
 				'algolia' => Algolia::class,
@@ -389,19 +415,20 @@ class SearchManager {
 				'enabled'        => $this->is_enabled(),
 				'initialEntries' => array( '/' ),
 				'initialIndex'   => 0,
-				'dialog'         => apply_filters( '_internal_woo_buddy_dialog', true ), // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+				'dialog'         => apply_filters( 'merchant_buddy_internal_dialog', true ), // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 			),
 		);
 
-		if ( in_array( HasSettings::class, Classes::class_uses_recursive( $this->provider ), true ) ) {
-			// @todo: figure out a better typeguard for this.
-			if ( ! method_exists( $this->provider, 'get_settings' ) || ! method_exists( $this->provider, 'get_fields' ) ) {
-				return $data;
-			}
-
-			$provider_settings = $this->provider->get_settings();
+		if ( method_exists( $this->provider, 'get_settings' ) && method_exists( $this->provider, 'get_fields' ) ) {
+			/**
+			 * Provider implements HasSettings
+			 *
+			 * @var HasSetting
+			 */
+			$provider          = get_class( $this->provider );
+			$provider_settings = $provider::get_settings();
 			$provider_data     = array_reduce(
-				$this->provider->get_fields(),
+				$provider::get_fields(),
 				function ( $carry, $field ) use ( $provider_settings ) {
 					if ( $field['public'] ) {
 						$carry[ $field['name'] ] = $provider_settings[ $field['name'] ] ?? $field['default'];

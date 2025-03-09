@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace Nadir\MerchantBuddy\Providers;
 
-use Algolia\AlgoliaSearch\SearchClient;
-use Algolia\AlgoliaSearch\SearchIndex;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 use Nadir\MerchantBuddy\Providers\Contracts\Batchable;
 use Nadir\MerchantBuddy\Providers\Contracts\HasSettings;
 use Nadir\MerchantBuddy\Providers\Contracts\ProviderInterface;
@@ -20,22 +19,21 @@ class Algolia implements ProviderInterface, Batchable {
 	/**
 	 * The Algolia search client instance.
 	 *
-	 * @var \Algolia\AlgoliaSearch\SearchClient
+	 * @var SearchClient
 	 */
 	private SearchClient $client;
 
 	/**
 	 * Returns the index for the given index name.
 	 *
-	 * @param string $entity_name The name of the index to get.
-	 * @return SearchIndex
+	 * @return SearchClient
 	 */
-	protected function get_index( string $entity_name ): SearchIndex {
+	protected function get_client(): SearchClient {
 		if ( ! isset( $this->client ) ) {
 			$this->client = SearchClient::create( $this->settings['application_id'], $this->settings['admin_api_key'] );
 		}
 
-		return $this->client->initIndex( $entity_name );
+		return $this->client;
 	}
 
 	/**
@@ -73,9 +71,9 @@ class Algolia implements ProviderInterface, Batchable {
 	 * @param string $entity_name The name of the index to add the item to.
 	 */
 	public function create_item( array $item_data, int $item_id, string $entity_name ): bool {
-		$index = $this->get_index( $entity_name );
+		$client = $this->get_client();
 		try {
-			$index->saveObject( $item_data, array( 'objectIDKey' => 'id' ) );
+			$client->saveObject( $entity_name, $item_data, array( 'objectIDKey' => 'id' ) );
 		} catch ( \Exception $e ) {
 			wc_get_logger()->error( 'Error creating item in Algolia: ' . $e->getMessage() );
 			return false;
@@ -91,9 +89,9 @@ class Algolia implements ProviderInterface, Batchable {
 	 * @param string $entity_name The name of the index to update the item in.
 	 */
 	public function update_item( array $item_data, int $item_id, string $entity_name ): bool {
-		$index = $this->get_index( $entity_name );
+		$client = $this->get_client();
 		try {
-			$index->saveObject( $item_data, array( 'objectIDKey' => 'id' ) );
+			$client->saveObject( $entity_name, $item_data, array( 'objectIDKey' => 'id' ) );
 		} catch ( \Exception $e ) {
 			wc_get_logger()->error( 'Error updating item in Algolia: ' . $e->getMessage() );
 			return false;
@@ -109,9 +107,9 @@ class Algolia implements ProviderInterface, Batchable {
 	 * @return bool
 	 */
 	public function delete_item( int $item_id, string $entity_name ): bool {
-		$index = $this->get_index( $entity_name );
+		$client = $this->get_client();
 		try {
-			$index->deleteObject( $item_id );
+			$client->deleteObject( $entity_name, $item_id );
 		} catch ( \Exception $e ) {
 			wc_get_logger()->error( 'Error deleting item in Algolia: ' . $e->getMessage() );
 			return false;
@@ -127,8 +125,8 @@ class Algolia implements ProviderInterface, Batchable {
 	 * @return bool
 	 */
 	public function batch_add_items( array $items, string $entity_name ): bool {
-		$index = $this->get_index( $entity_name );
-		$items = array_map(
+		$client = $this->get_client();
+		$items  = array_map(
 			function ( $item ) {
 				$item['objectID'] = $item['id'];
 				return $item;
@@ -136,7 +134,7 @@ class Algolia implements ProviderInterface, Batchable {
 			$items
 		);
 		try {
-			$index->saveObjects( $items );
+			$client->saveObjects( $entity_name, $items );
 		} catch ( \Exception $e ) {
 			wc_get_logger()->error( 'Error adding items in Algolia: ' . $e->getMessage() );
 			return false;
@@ -152,8 +150,8 @@ class Algolia implements ProviderInterface, Batchable {
 	 * @return bool
 	 */
 	public function batch_update_items( array $items, string $entity_name ): bool {
-		$index = $this->get_index( $entity_name );
-		$items = array_map(
+		$client = $this->get_client();
+		$items  = array_map(
 			function ( $item ) {
 				$item['objectID'] = $item['id'];
 				return $item;
@@ -161,7 +159,7 @@ class Algolia implements ProviderInterface, Batchable {
 			$items
 		);
 		try {
-			$index->saveObjects( $items );
+			$client->saveObjects( $entity_name, $items );
 		} catch ( \Exception $e ) {
 			wc_get_logger()->error( 'Error updating items in Algolia: ' . $e->getMessage() );
 			return false;
@@ -177,9 +175,9 @@ class Algolia implements ProviderInterface, Batchable {
 	 * @return bool
 	 */
 	public function batch_delete_items( array $item_ids, string $entity_name ): bool {
-		$index = $this->get_index( $entity_name );
+		$client = $this->get_client();
 		try {
-			$index->deleteObjects( $item_ids );
+			$client->deleteObjects( $entity_name, $item_ids );
 		} catch ( \Exception $e ) {
 			wc_get_logger()->error( 'Error deleting items in Algolia: ' . $e->getMessage() );
 			return false;

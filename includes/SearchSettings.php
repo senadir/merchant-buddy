@@ -54,8 +54,6 @@ class SearchSettings extends WC_Integration {
 		global $hide_save_button;
 		$hide_save_button = true;
 
-		wp_enqueue_script( 'merchant-buddy-settings' );
-
 		echo '<h2>' . esc_html__( 'Merchant Buddy', 'merchant-buddy' ) . '</h2>';
 		echo '<div class="wrap"><div id="merchant-buddy-settings-container"></div></div>';
 	}
@@ -65,22 +63,22 @@ class SearchSettings extends WC_Integration {
 	 */
 	public function hydrate_client_settings() {
 		$main_settings       = get_option(
-			'woo_buddy_main_settings',
+			'merchant_buddy_main_settings',
 			array(
 				'provider' => 'default',
 				'enabled'  => 'yes',
 			)
 		);
-		$enabled_entities    = get_option( 'woo_buddy_enabled_entities', array( 'orders', 'products', 'customers' ) );
+		$enabled_entities    = get_option( 'merchant_buddy_enabled_entities', array( 'orders', 'products', 'customers' ) );
 		$available_providers = apply_filters( // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-			'woo_buddy_available_providers',
+			'merchant_buddy_available_providers',
 			array(
 				'default' => Providers\DefaultProvider::class,
 				'algolia' => Providers\Algolia::class,
 			)
 		);
 		$available_entities  = apply_filters( // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-			'woo_buddy_available_entities',
+			'merchant_buddy_available_entities',
 			array(
 				'orders'    => Entities\Orders::class,
 				'products'  => Entities\Products::class,
@@ -96,7 +94,7 @@ class SearchSettings extends WC_Integration {
 					'title'       => $provider::get_provider_label(),
 					'description' => $provider::get_description(),
 					'fields'      => $provider::get_fields(),
-					'option_name' => $provider::get_option_name(),
+					'option_name' => 'merchant_buddy_' . $provider::get_provider_slug() . '_provider_settings',
 				);
 
 				$default_fields_values = array_reduce(
@@ -108,7 +106,7 @@ class SearchSettings extends WC_Integration {
 					array()
 				);
 
-				$saved_fields_values = get_option( $provider::get_option_name(), $default_fields_values );
+				$saved_fields_values = get_option( 'merchant_buddy_' . $provider::get_provider_slug() . '_provider_settings', $default_fields_values );
 
 				$provider_settings[ $provider::get_provider_slug() ] = wp_parse_args(
 					$saved_fields_values,
@@ -164,13 +162,13 @@ class SearchSettings extends WC_Integration {
 	public function register_settings() {
 		register_setting(
 			'options',
-			'woo_buddy_main_settings',
+			'merchant_buddy_main_settings',
 			array(
-				'type'         => 'object',
-				'description'  => 'Merchant Buddy Main Settings',
-				'default'      => array(),
-				'show_in_rest' => array(
-					'name'   => 'woo_buddy_main_settings',
+				'type'              => 'object',
+				'description'       => 'Merchant Buddy Main Settings',
+				'default'           => array(),
+				'show_in_rest'      => array(
+					'name'   => 'merchant_buddy_main_settings',
 					'schema' => array(
 						'type'       => 'object',
 						'properties' => array(
@@ -187,24 +185,24 @@ class SearchSettings extends WC_Integration {
 					),
 				),
 				'sanitize_callback' => function ( $value ) {
-					$existing = get_option('woo_buddy_main_settings', array());
+					$existing = get_option( 'merchant_buddy_main_settings', array() );
 					$sanitized = array(
-						'enabled' => isset($value['enabled']) ? sanitize_text_field($value['enabled']) : 'no',
-						'provider' => isset($value['provider']) ? sanitize_text_field($value['provider']) : ''
+						'enabled'  => isset( $value['enabled'] ) ? sanitize_text_field( $value['enabled'] ) : 'no',
+						'provider' => isset( $value['provider'] ) ? sanitize_text_field( $value['provider'] ) : '',
 					);
-					return array_merge($existing, $sanitized);
+					return array_merge( $existing, $sanitized );
 				},
 			)
 		);
 		register_setting(
 			'options',
-			'woo_buddy_enabled_entities',
+			'merchant_buddy_enabled_entities',
 			array(
-				'type'         => 'array',
-				'description'  => 'Merchant Buddy Enabled Entities',
-				'default'      => array(),
-				'show_in_rest' => array(
-					'name'   => 'woo_buddy_enabled_entities',
+				'type'              => 'array',
+				'description'       => 'Merchant Buddy Enabled Entities',
+				'default'           => array(),
+				'show_in_rest'      => array(
+					'name'   => 'merchant_buddy_enabled_entities',
 					'schema' => array(
 						'type'  => 'array',
 						'items' => array(
@@ -219,7 +217,7 @@ class SearchSettings extends WC_Integration {
 		);
 
 		$available_providers = apply_filters( // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-			'woo_buddy_available_providers',
+			'merchant_buddy_available_providers',
 			array(
 				'default' => Providers\DefaultProvider::class,
 				'algolia' => Providers\Algolia::class,
@@ -230,13 +228,13 @@ class SearchSettings extends WC_Integration {
 			if ( in_array( HasSettings::class, Classes::class_uses_recursive( $provider ), true ) ) {
 				register_setting(
 					'options',
-					$provider::get_option_name(),
+					'merchant_buddy_' . $provider::get_provider_slug() . '_provider_settings',
 					array(
-						'type'         => 'object',
-						'description'  => $provider::get_description(),
-						'default'      => array(),
-						'show_in_rest' => array(
-							'name'   => $provider::get_option_name(),
+						'type'              => 'object',
+						'description'       => $provider::get_description(),
+						'default'           => array(),
+						'show_in_rest'      => array(
+							'name'   => 'merchant_buddy_' . $provider::get_provider_slug() . '_provider_settings',
 							'schema' => array(
 								'type'       => 'object',
 								'properties' => $this->get_provider_fields_schema( $provider::get_fields() ),
@@ -245,7 +243,7 @@ class SearchSettings extends WC_Integration {
 						'sanitize_callback' => function ( $value ) use ( $provider ) {
 							return wp_parse_args(
 								$value,
-								get_option( $provider::get_option_name(), array() )
+								get_option( 'merchant_buddy_' . $provider::get_provider_slug() . '_provider_settings', array() )
 							);
 						},
 					)
@@ -253,24 +251,46 @@ class SearchSettings extends WC_Integration {
 			}
 		}
 	}
-
 	/**
 	 * Enqueue scripts.
 	 */
 	public function enqueue_scripts() {
-		$script_path       = '../build/settings.js';
-		$script_asset_path = '../build/settings.asset.php';
-		$style_path        = '../build/settings.css';
-		$script_asset      = file_exists( plugin_dir_path( __FILE__ ) . $script_asset_path )
-		? require plugin_dir_path( __FILE__ ) . $script_asset_path
-		: array(
-			'dependencies' => array(),
-			'version'      => filemtime( plugin_dir_path( __FILE__ ) . $script_path ),
+		$plugin_url        = plugin_dir_url( __DIR__ );
+		$plugin_path       = plugin_dir_path( __DIR__ );
+		$script_path       = 'build/settings.js';
+		$script_asset_path = 'build/settings.asset.php';
+
+		// Check if build files exist
+		if ( ! file_exists( $plugin_path . $script_path ) ) {
+			return;
+		}
+		$script_asset = file_exists( $plugin_path . $script_asset_path )
+			? require $plugin_path . $script_asset_path
+			: array(
+				'dependencies' => array(),
+				'version'      => filemtime( $plugin_path . $script_path ),
+			);
+
+		$script_url = plugins_url( $script_path, __DIR__ );
+
+		// Enqueue main script and its dependencies
+		wp_enqueue_script(
+			'merchant-buddy-settings',
+			$script_url,
+			$script_asset['dependencies'],
+			$script_asset['version'],
+			true
 		);
 
-		$script_url = plugins_url( $script_path, __FILE__ );
-		wp_enqueue_script( 'merchant-buddy-settings', $script_url, $script_asset['dependencies'], $script_asset['version'], true );
-		wp_enqueue_style( 'merchant-buddy-settings', $style_path, array(), $script_asset['version'] );
+		// Enqueue styles if they exist
+		if ( file_exists( $plugin_path . 'build/settings.css' ) ) {
+			wp_enqueue_style(
+				'merchant-buddy-settings',
+				$plugin_url . 'build/settings.css',
+				array(),
+				$script_asset['version']
+			);
+		}
 	}
 
 	/**

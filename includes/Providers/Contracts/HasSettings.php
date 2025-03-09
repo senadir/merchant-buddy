@@ -24,39 +24,30 @@ trait HasSettings {
 	 *
 	 * @return bool
 	 */
-	public static function has_settings(): bool {
+	public function has_settings(): bool {
 		return true;
 	}
 
 	/**
 	 * Returns the settings for the provider.
 	 */
-	public function get_settings() {
-		return get_option( static::get_option_name() );
+	public static function get_settings() {
+		return get_option( 'merchant_buddy_' . static::get_provider_slug() . '_provider_settings' );
 	}
 
 	/**
-	 * Returns the description of the provider.
+	 * Returns the description for the provider settings.
 	 */
 	public static function get_description() {
 		return sprintf(
-			/* translators: %s: Provider name */
-			__( 'The %s search provider settings.', 'merchant-buddy' ),
+			/* translators: %s: provider name */
+			__( 'Configure the settings for %s integration.', 'merchant-buddy' ),
 			static::get_provider_label()
 		);
 	}
 
 	/**
-	 * Returns the option name for the provider settings.
-	 */
-	public static function get_option_name() {
-		return 'woo_buddy_' . static::get_provider_slug() . '_settings';
-	}
-
-	/**
-	 * Returns a list of fields to display in the settings tab.
-	 *
-	 * @see https://developer.woocommerce.com/docs/settings-api/
+	 * Returns the fields for the provider settings.
 	 */
 	abstract public static function get_fields();
 }

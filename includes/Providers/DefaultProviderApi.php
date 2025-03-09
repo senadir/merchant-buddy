@@ -47,7 +47,7 @@ class DefaultProviderApi {
 		 * @since 1.0.0
 		 */
 		$entities = apply_filters(
-			'woo_buddy_available_entities',
+			'merchant_buddy_available_entities',
 			array(
 				'orders'    => Entities\Orders::class,
 				'products'  => Entities\Products::class,
@@ -55,7 +55,7 @@ class DefaultProviderApi {
 			)
 		);
 
-		$enabled_entities = get_option( 'woo_buddy_enabled_entities', array( 'orders', 'products', 'customers' ) );
+		$enabled_entities = get_option( 'merchant_buddy_enabled_entities', array( 'orders', 'products', 'customers' ) );
 
 		return array_intersect_key( $entities, array_flip( $enabled_entities ) );
 	}

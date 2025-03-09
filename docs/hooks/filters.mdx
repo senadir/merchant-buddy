@@ -4,7 +4,7 @@ title: "Filters"
 
 Merchant Buddy provides a number of filters to allow you to customize entities and providers without needing to create your provider or entity.
 
-### `woo_buddy_available_providers`
+### `merchant_buddy_available_providers`
 
 Filters the list of available search providers, it's also the way to add your own search provider. Available providers are surfaced in the search settings page.
 
@@ -28,7 +28,7 @@ $default_providers = [
 Add a provider to the list of available providers.
 
 ```php
-add_filter( 'woo_buddy_available_providers', function( $providers ) {
+add_filter( 'merchant_buddy_available_providers', function( $providers ) {
   $providers['my_provider'] = Providers\MyProvider::class;
   return $providers;
 });
@@ -37,13 +37,13 @@ add_filter( 'woo_buddy_available_providers', function( $providers ) {
 Or remove a provider from the list of available providers.
 
 ```php
-add_filter( 'woo_buddy_available_providers', function( $providers ) {
+add_filter( 'merchant_buddy_available_providers', function( $providers ) {
     unset( $providers['algolia'] );
     return $providers;
 });
 ```
 
-### `woo_buddy_available_entities`
+### `merchant_buddy_available_entities`
 
 Filters the list of available searchable entities, it's also the way to add your own searchable entity. Available entities are surfaced in the search settings page.
 
@@ -68,7 +68,7 @@ $default_entities = [
 Add a new searchable entity.
 
 ```php
-add_filter( 'woo_buddy_available_entities', function( $entities ) {
+add_filter( 'merchant_buddy_available_entities', function( $entities ) {
     $entities['invoices'] = Entities\MyInvoices::class;
     return $entities;
 });
@@ -77,13 +77,13 @@ add_filter( 'woo_buddy_available_entities', function( $entities ) {
 Remove an entity from the list of available entities.
 
 ```php
-add_filter( 'woo_buddy_available_entities', function( $entities ) {
+add_filter( 'merchant_buddy_available_entities', function( $entities ) {
     unset( $entities['customers'] );
     return $entities;
 });
 ```
 
-### `woo_buddy_{entity}_display_fields`
+### `merchant_buddy_{entity}_display_fields`
 
 Filters the list of attributes that should be returned in a entity search result. Those are the props used to render the entity in the search results.
 
@@ -96,7 +96,7 @@ Filters the list of attributes that should be returned in a entity search result
 #### Example
 
 ```php
-add_filter( 'woo_buddy_orders_display_fields', function( $display_fields ) {
+add_filter( 'merchant_buddy_orders_display_fields', function( $display_fields ) {
     if ( ! in_array( 'order_number', $display_fields ) ) {
         $display_fields[] = 'order_number';
     }
@@ -104,7 +104,7 @@ add_filter( 'woo_buddy_orders_display_fields', function( $display_fields ) {
 });
 ```
 
-### `woo_buddy_{entity}_searchable_fields`
+### `merchant_buddy_{entity}_searchable_fields`
 
 Filters the list of attributes that should be used to search for an entity. Proviers that support indexing can use those attributes to index an entity using them. By default, all fields are used.
 
@@ -117,7 +117,7 @@ Filters the list of attributes that should be used to search for an entity. Prov
 #### Example
 
 ```php
-add_filter( 'woo_buddy_customers_searchable_fields', function( $searchable_fields ) {
+add_filter( 'merchant_buddy_customers_searchable_fields', function( $searchable_fields ) {
     if ( ! in_array( 'billing_phone', $searchable_fields ) ) {
         $searchable_fields[] = 'billing_phone';
     }
@@ -125,7 +125,7 @@ add_filter( 'woo_buddy_customers_searchable_fields', function( $searchable_field
 });
 ```
 
-### `woo_buddy_{entity}_item_data`
+### `merchant_buddy_{entity}_item_data`
 
 Filter the item data that will be passed to providers.
 
@@ -142,7 +142,7 @@ Filter the item data that will be passed to providers.
 #### Example
 
 ```php
-add_filter( 'woo_buddy_orders_item_data', function( $item_data, $item ) {
+add_filter( 'merchant_buddy_orders_item_data', function( $item_data, $item ) {
     $item_data['order_number'] = $item->get_order_number();
     return $item_data;
 }, 10, 2 );

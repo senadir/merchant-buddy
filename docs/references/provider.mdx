@@ -97,17 +97,8 @@ The `HasSettings` trait can be used by providers that need to expose configurati
   Indicates if the provider has configurable settings. Defaults to `true`.
 </ParamField>
 
-<ParamField
-  path="get_option_name(): string"
-  type="string"
-  default="search_buddy_{provider_slug}_settings"
->
-  Returns the WordPress option name used to save the provider's settings.
-</ParamField>
-
 <ParamField path="get_settings(): array" type="array">
-  Returns the saved settings values for the provider. Defaults to `get_option(
-  self::get_option_name() )`.
+  Returns the saved settings values for the provider. Uses the WordPress option name `merchant_buddy_{provider_slug}_settings`.
 </ParamField>
 
 <ParamField path="get_description(): string|array" type="string|array">

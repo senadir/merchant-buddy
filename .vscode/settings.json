@@ -11,10 +11,24 @@
   "[javascriptreact]": {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
-  "editor.formatOnType": false, // required
-  "editor.formatOnPaste": true, // optional
-  "editor.formatOnSave": true, // optional
-  "editor.formatOnSaveMode": "file", // required to format on save
-  "files.autoSave": "off", // optional but recommended
-  "vs-code-prettier-eslint.prettierLast": false
+  "editor.formatOnType": false,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "files.autoSave": "off",
+  "vs-code-prettier-eslint.prettierLast": false,
+  "phpCodeSniffer.standard": "Automatic",
+  "phpCodeSniffer.autoExecutable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
+  },
+  "[php]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "obliviousharmony.vscode-php-codesniffer"
+  },
+  "intelephense.environment.includePaths": [
+    "/Users/nadir/work/merchant-buddy/vendor/php-stubs/woocommerce-stubs",
+    "/Users/nadir/work/monorepo/plugins/woocommerce/includes",
+    "/Users/nadir/work/monorepo/plugins/woocommerce/src"
+  ]
 }

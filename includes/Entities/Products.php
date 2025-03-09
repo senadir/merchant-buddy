@@ -194,7 +194,7 @@ class Products extends AbstractEntity implements Batchable {
 			'updated_at'       => $updated_at,
 		);
 
-		return apply_filters( 'woo_buddy_' . $this->get_entity_slug() . '_item_data', $data, $product );
+		return apply_filters( 'merchant_buddy_' . $this->get_entity_slug() . '_item_data', $data, $product );
 	}
 
 	/**

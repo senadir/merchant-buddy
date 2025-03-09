@@ -55,7 +55,7 @@ abstract class AbstractEntity implements EntityInterface {
 		 *
 		 * @since 1.0.0
 		 */
-		return apply_filters( "woo_buddy_{$this->get_entity_slug()}_searchable_fields", static::$searchable_fields, $this );
+		return apply_filters( "merchant_buddy_{$this->get_entity_slug()}_searchable_fields", static::$searchable_fields, $this );
 	}
 
 	/**
@@ -73,6 +73,6 @@ abstract class AbstractEntity implements EntityInterface {
 		 *
 		 * @since 1.0.0
 		 */
-		return apply_filters( "woo_buddy_{$this->get_entity_slug()}_display_fields", static::$display_fields, $this );
+		return apply_filters( "merchant_buddy_{$this->get_entity_slug()}_display_fields", static::$display_fields, $this );
 	}
 }

@@ -5,15 +5,15 @@
  * Description: Instantly available search palette for WooCommerce with instant search and keyboard shortcuts.
  * Version: 1.0.1
  * Requires at least: 6.4
- * Tested up to: 6.7.1
+ * Tested up to: 6.7
  * Requires PHP: 7.4
  * Author: Nadir Seghir
  * Author URI: https://nadir.blog
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: merchant-buddy
- * WC requires at least: 9.3.0
- * WC tested up to: 9.6.1
+ * WC requires at least: 9.3
+ * WC tested up to: 9.8
  * Requires Plugins: woocommerce
  *
  * @package MerchantBuddy
@@ -71,12 +71,13 @@ add_action(
 	'plugins_loaded',
 	function () {
 		new SearchManager();
-		add_filter(
-			'woocommerce_integrations',
-			function ( $integrations ) {
-				$integrations[] = SearchSettings::class;
-				return $integrations;
-			}
-		);
+	}
+);
+
+add_filter(
+	'woocommerce_integrations',
+	function ( $integrations ) {
+		$integrations[] = SearchSettings::class;
+		return $integrations;
 	}
 );
