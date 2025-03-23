@@ -98,14 +98,21 @@ export const SettingsProvider = ({
   }, []);
 
   const save = useCallback(() => {
-    const data: {
-      merchant_buddy_main_settings: { enabled: string; provider: string };
+    type SettingsData = {
+      merchant_buddy_main_settings: {
+        enabled: string;
+        provider: string;
+        shortcut: string;
+      };
       merchant_buddy_enabled_entities: string[];
       [key: string]: unknown;
-    } = {
+    };
+
+    const data: SettingsData = {
       merchant_buddy_main_settings: {
         enabled: settings.enabled ? "yes" : "no",
         provider: settings.provider,
+        shortcut: settings.shortcut,
       },
       merchant_buddy_enabled_entities: entities
         .filter((entity) => entity.enabled)
@@ -133,7 +140,7 @@ export const SettingsProvider = ({
 
     // @todo This should be improved to include error handling in case of API failure, or invalid data being sent that
     // does not match the schema. This would fail silently on the API side.
-    apiFetch({
+    apiFetch<SettingsData>({
       path: "/wp/v2/settings",
       method: "POST",
       data,
@@ -149,7 +156,11 @@ export const SettingsProvider = ({
           data.merchant_buddy_enabled_entities,
         )
       ) {
-        dispatch("core/notices").createSuccessNotice(
+        (
+          dispatch("core/notices") as {
+            createSuccessNotice: (message: string) => void;
+          }
+        ).createSuccessNotice(
           __("Merchant Buddy settings have been saved.", "woocommerce"),
         );
       }

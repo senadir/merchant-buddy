@@ -71,6 +71,7 @@ class SearchManager {
 			array(
 				'enabled'  => 'yes',
 				'provider' => 'default',
+				'shortcut' => 'meta+k',
 			)
 		);
 		$this->settings = $settings;
@@ -413,6 +414,7 @@ class SearchManager {
 			'main'     => array(
 				'provider'       => $this->provider->get_provider_slug(),
 				'enabled'        => $this->is_enabled(),
+				'shortcut'       => $this->get_setting('shortcut', 'meta+k'),
 				'initialEntries' => array( '/' ),
 				'initialIndex'   => 0,
 				'dialog'         => apply_filters( 'merchant_buddy_internal_dialog', true ), // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment

@@ -67,6 +67,7 @@ class SearchSettings extends WC_Integration {
 			array(
 				'provider' => 'default',
 				'enabled'  => 'yes',
+				'shortcut' => 'meta+k',
 			)
 		);
 		$enabled_entities    = get_option( 'merchant_buddy_enabled_entities', array( 'orders', 'products', 'customers' ) );
@@ -117,6 +118,7 @@ class SearchSettings extends WC_Integration {
 		$settings = array(
 			'enabled'                => wc_string_to_bool( $main_settings['enabled'] ),
 			'provider'               => $main_settings['provider'],
+			'shortcut'               => $main_settings['shortcut'],
 			'entities'               => $enabled_entities,
 			'providerSettingsSchema' => $provider_settings_schema,
 			'providerSettings'       => $provider_settings,
@@ -165,32 +167,37 @@ class SearchSettings extends WC_Integration {
 			'merchant_buddy_main_settings',
 			array(
 				'type'              => 'object',
-				'description'       => 'Merchant Buddy Main Settings',
-				'default'           => array(),
+				'description'       => __( 'Main settings for Merchant Buddy', 'merchant-buddy' ),
+				'default'           => array(
+					'enabled'  => 'yes',
+					'provider' => 'default',
+					'shortcut' => 'meta+k',
+				),
 				'show_in_rest'      => array(
-					'name'   => 'merchant_buddy_main_settings',
 					'schema' => array(
 						'type'       => 'object',
 						'properties' => array(
 							'enabled'  => array(
-								'description' => __( 'If enabled, this method will appear on the block based checkout.', 'merchant-buddy' ),
-								'type'        => 'string',
-								'enum'        => array( 'yes', 'no' ),
+								'type'    => 'string',
+								'enum'    => array( 'yes', 'no' ),
+								'default' => 'yes',
 							),
 							'provider' => array(
-								'description' => __( 'This controls the search provider.', 'merchant-buddy' ),
-								'type'        => 'string',
+								'type'    => 'string',
+								'default' => 'default',
+							),
+							'shortcut' => array(
+								'type'    => 'string',
+								'default' => 'meta+k',
 							),
 						),
 					),
 				),
 				'sanitize_callback' => function ( $value ) {
-					$existing = get_option( 'merchant_buddy_main_settings', array() );
-					$sanitized = array(
-						'enabled'  => isset( $value['enabled'] ) ? sanitize_text_field( $value['enabled'] ) : 'no',
-						'provider' => isset( $value['provider'] ) ? sanitize_text_field( $value['provider'] ) : '',
+					return wp_parse_args(
+						$value,
+						get_option( 'merchant_buddy_main_settings', array() )
 					);
-					return array_merge( $existing, $sanitized );
 				},
 			)
 		);
