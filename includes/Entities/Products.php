@@ -90,7 +90,8 @@ class Products extends AbstractEntity implements Batchable {
 	public function create_item( int $product_id = 0, $product = null ): void {
 		$product = $product instanceof WC_Product ? $product : wc_get_product( $product_id );
 
-		if ( ! $product ) {
+		// Guard against non-product post types from generic hooks like untrashed_post.
+		if ( ! $product instanceof WC_Product ) {
 			return;
 		}
 
@@ -133,6 +134,11 @@ class Products extends AbstractEntity implements Batchable {
 	 */
 	public function delete_item( int $product_id = 0 ): void {
 		if ( ! $product_id ) {
+			return;
+		}
+
+		// Guard against non-product post types from generic hooks like wp_trash_post.
+		if ( 'product' !== get_post_type( $product_id ) ) {
 			return;
 		}
 
@@ -179,6 +185,8 @@ class Products extends AbstractEntity implements Batchable {
 		$created_at = $product->get_date_created() ? $product->get_date_created()->getTimestamp() : strtotime( get_post_field( 'post_date', $product->get_id() ) );
 		$updated_at = $product->get_date_modified() ? $product->get_date_modified()->getTimestamp() : $created_at;
 
+		$children_count = count( $product->get_children() );
+
 		$data = array(
 			'id'               => $product->get_id(),
 			'name'             => $product->get_name(),
@@ -186,7 +194,7 @@ class Products extends AbstractEntity implements Batchable {
 			'edit_url'         => $this->get_product_edit_link( $product ),
 			'price'            => $product->get_price(),
 			'stock_quantity'   => $product->get_stock_quantity() ? sprintf( '%d in stock', $product->get_stock_quantity() ) : '',
-			'variations_count' => count( $product->get_children() ) ? sprintf( '%d variations', count( $product->get_children() ) ) : '',
+			'variations_count' => $children_count ? sprintf( '%d variations', $children_count ) : '',
 			'status'           => $product->get_status(),
 			'image_url'        => $this->get_product_image_url( $product ),
 			'categories'       => $this->get_product_categories( $product ),
