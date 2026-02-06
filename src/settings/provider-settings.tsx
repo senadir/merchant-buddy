@@ -8,7 +8,7 @@ import {
 	SelectControl,
 	TextControl,
 } from '@wordpress/components';
-import { useEffect, useRef } from '@wordpress/element';
+import { useCallback, useEffect, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -147,12 +147,13 @@ const ProviderSection = ({
 	const settings = providerSettings[providerKey] || {};
 	const setSettingField = setProviderSettingField(providerKey);
 	const fieldsRequired = providerKey === mainSettings.provider;
+	const Description = useCallback(
+		() => <ProviderSettingsDescription provider={provider} />,
+		[provider]
+	);
+
 	return (
-		<SettingsSection
-			Description={() => (
-				<ProviderSettingsDescription provider={provider} />
-			)}
-		>
+		<SettingsSection Description={Description}>
 			<SettingsCard>
 				{provider.fields.map((field) => {
 					switch (field.type) {
