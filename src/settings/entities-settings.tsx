@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { ToggleControl, ExternalLink } from '@wordpress/components';
 import styled from '@emotion/styled';
-import { Fragment } from '@wordpress/element';
+import { Fragment, useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -43,31 +43,36 @@ const StyledEntityKey = styled.code`
 const EntitySettings = () => {
 	const { entities, updateEntities, toggleEntity } = useSettingsContext();
 
-	const tableColumns = [
-		{
-			name: 'name',
-			label: __('Entity', 'merchant-buddy'),
-			renderCallback: (row: SortableData): JSX.Element => (
-				<Fragment>
-					{String(row.name)}
-					<StyledEntityKey>{String(row.id)}</StyledEntityKey>
-				</Fragment>
-			),
-		},
-		{
-			name: 'enabled',
-			label: __('Enabled', 'merchant-buddy'),
-			align: 'right',
-			renderCallback: (row: SortableData): JSX.Element => (
-				<ToggleControl
-					label=""
-					checked={isBoolean(row.enabled) ? row.enabled : false}
-					onChange={() => toggleEntity(row.id)}
-					__nextHasNoMarginBottom={true}
-				/>
-			),
-		},
-	];
+	const tableColumns = useMemo(
+		() => [
+			{
+				name: 'name',
+				label: __('Entity', 'merchant-buddy'),
+				renderCallback: (row: SortableData): JSX.Element => (
+					<Fragment>
+						{String(row.name)}
+						<StyledEntityKey>{String(row.id)}</StyledEntityKey>
+					</Fragment>
+				),
+			},
+			{
+				name: 'enabled',
+				label: __('Enabled', 'merchant-buddy'),
+				align: 'right',
+				renderCallback: (row: SortableData): JSX.Element => (
+					<ToggleControl
+						label=""
+						checked={
+							isBoolean(row.enabled) ? row.enabled : false
+						}
+						onChange={() => toggleEntity(row.id)}
+						__nextHasNoMarginBottom={true}
+					/>
+				),
+			},
+		],
+		[toggleEntity]
+	);
 
 	return (
 		<SettingsSection Description={EntitiesSettingsDescription}>
