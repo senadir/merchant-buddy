@@ -28,6 +28,21 @@ const EntityList = () => {
 	const [searchParams] = useSearchParams();
 	const loadingIconRef = useRef<HTMLDivElement>(null);
 	const search = searchParams.get('search') ?? '';
+	const [shiftPressed, setShiftPressed] = useState(false);
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			setShiftPressed(event.shiftKey);
+		};
+		const handleKeyUp = (event: KeyboardEvent) => {
+			setShiftPressed(event.shiftKey);
+		};
+		window.addEventListener('keydown', handleKeyDown);
+		window.addEventListener('keyup', handleKeyUp);
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+			window.removeEventListener('keyup', handleKeyUp);
+		};
+	}, []);
 	const {
 		data: items,
 		isSuccess,
@@ -121,34 +136,28 @@ const EntityList = () => {
 						entityKey={entityKey}
 						item={item}
 						key={item.id}
+						shiftPressed={shiftPressed}
 					/>
 				))}
 		</>
 	);
 };
 
-const EntityItem = ({ entityKey, item }: { entityKey: string; item: any }) => {
+const EntityItem = ({
+	entityKey,
+	item,
+	shiftPressed,
+}: {
+	entityKey: string;
+	item: any;
+	shiftPressed: boolean;
+}) => {
 	const navigate = useNavigate();
 	const { entities } = useSettings();
 	const entity = entities[entityKey];
 	const selected = useCommandState((state) => {
 		return state.value === item.id.toString();
 	});
-	const [shiftPressed, setShiftPressed] = useState(false);
-	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			setShiftPressed(event.shiftKey);
-		};
-		const handleKeyUp = (event: KeyboardEvent) => {
-			setShiftPressed(event.shiftKey);
-		};
-		window.addEventListener('keydown', handleKeyDown);
-		window.addEventListener('keyup', handleKeyUp);
-		return () => {
-			window.removeEventListener('keydown', handleKeyDown);
-			window.removeEventListener('keyup', handleKeyUp);
-		};
-	}, []);
 
 	const primaryLink = useMemo(() => {
 		return getPrimaryLink(item, entity);
