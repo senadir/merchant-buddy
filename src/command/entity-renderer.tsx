@@ -1,3 +1,4 @@
+import { useMemo } from '@wordpress/element';
 import { Entity } from './settings-context';
 import { layouts } from './layouts';
 
@@ -50,11 +51,15 @@ export const EntityRenderer = ({
 	const bindings = entity.bindings;
 	const Layout = layouts[template];
 
-	const props = Object.fromEntries(
-		Object.entries(bindings).map(([key, binding]) => [
-			camelCase(key),
-			bindingToValue(binding, item),
-		])
+	const props = useMemo(
+		() =>
+			Object.fromEntries(
+				Object.entries(bindings).map(([key, binding]) => [
+					camelCase(key),
+					bindingToValue(binding, item),
+				])
+			),
+		[bindings, item]
 	);
 
 	return <Layout {...(props as any)} />;
