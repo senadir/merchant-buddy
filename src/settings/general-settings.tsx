@@ -16,6 +16,13 @@ import styled from '@emotion/styled';
  */
 import { SettingsCard, SettingsSection } from './shared-components';
 import { useSettingsContext } from './settings-context';
+
+const ShortcutButton = styled.button`
+	all: unset;
+	cursor: pointer;
+	display: inline;
+`;
+
 const StyledShortcut = styled.span<{ variant?: 'success' | 'idle' | 'error' }>`
 	background-color: ${(props) => {
 		switch (props.variant) {
@@ -154,7 +161,7 @@ const ShortcutDisplay = ({
 
 	const validityStatus = shortcutValidity(recordedKeys);
 	return (
-		<span onClick={toggleRecording}>
+		<ShortcutButton type="button" onClick={toggleRecording}>
 			{isRecording && (
 				<Popover
 					onClose={() => stop()}
@@ -215,7 +222,7 @@ const ShortcutDisplay = ({
 					{key}
 				</StyledShortcut>
 			))}
-		</span>
+		</ShortcutButton>
 	);
 };
 
