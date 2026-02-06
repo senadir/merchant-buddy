@@ -109,11 +109,18 @@ class DefaultProviderApi {
 		$entity       = $request->get_param( 'entity' );
 		$search_query = $request->get_param( 's' );
 
+		$enabled_entities = $this->get_enabled_entities();
+
 		if ( 'all' === $entity ) {
-			$entities = $this->get_enabled_entities();
+			$entities = $enabled_entities;
+		} elseif ( ! isset( $enabled_entities[ $entity ] ) ) {
+			return new \WP_HTTP_Response(
+				array( 'message' => __( 'Invalid entity.', 'merchant-buddy' ) ),
+				400
+			);
 		} else {
 			$entities = array(
-				$entity => $this->get_enabled_entities()[ $entity ],
+				$entity => $enabled_entities[ $entity ],
 			);
 		}
 
