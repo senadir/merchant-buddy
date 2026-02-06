@@ -17,9 +17,7 @@
 			"program": "${file}",
 			"cwd": "${fileDirname}",
 			"port": 0,
-			"runtimeArgs": [
-				"-dxdebug.start_with_request=yes"
-			],
+			"runtimeArgs": ["-dxdebug.start_with_request=yes"],
 			"env": {
 				"XDEBUG_MODE": "debug,develop",
 				"XDEBUG_CONFIG": "client_port=${port}"

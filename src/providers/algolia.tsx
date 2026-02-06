@@ -5,8 +5,7 @@ let client: SearchClient | null = null;
 
 function getClient(): SearchClient {
 	if (!client) {
-		const algoliaAppId =
-			window.searchBuddy?.provider?.application_id || '';
+		const algoliaAppId = window.searchBuddy?.provider?.application_id || '';
 		const algoliaSearchKey =
 			window.searchBuddy?.provider?.search_api_key || '';
 		client = searchClient(algoliaAppId, algoliaSearchKey);
@@ -74,8 +73,8 @@ const AlgoliaProvider: Provider = {
 			(acc, result, index) => {
 				acc[entityKeys[index]] = result.hits.map((hit) => ({
 					id: Number.isNaN(Number(hit.objectID))
-					? hit.objectID
-					: Number(hit.objectID),
+						? hit.objectID
+						: Number(hit.objectID),
 					...hit,
 				}));
 				return acc;

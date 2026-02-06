@@ -5,8 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SettingsProvider } from './command/settings-context';
 
 class ErrorBoundary extends Component {
-	constructor( props ) {
-		super( props );
+	constructor(props) {
+		super(props);
 		this.state = { hasError: false };
 	}
 
@@ -14,13 +14,13 @@ class ErrorBoundary extends Component {
 		return { hasError: true };
 	}
 
-	componentDidCatch( error, errorInfo ) {
+	componentDidCatch(error, errorInfo) {
 		// eslint-disable-next-line no-console
-		console.error( 'Merchant Buddy error:', error, errorInfo );
+		console.error('Merchant Buddy error:', error, errorInfo);
 	}
 
 	render() {
-		if ( this.state.hasError ) {
+		if (this.state.hasError) {
 			return null;
 		}
 		return this.props.children;

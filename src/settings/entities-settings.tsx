@@ -62,9 +62,7 @@ const EntitySettings = () => {
 				renderCallback: (row: SortableData): JSX.Element => (
 					<ToggleControl
 						label=""
-						checked={
-							isBoolean(row.enabled) ? row.enabled : false
-						}
+						checked={isBoolean(row.enabled) ? row.enabled : false}
 						onChange={() => toggleEntity(row.id)}
 						__nextHasNoMarginBottom={true}
 					/>

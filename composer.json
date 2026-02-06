@@ -1,39 +1,39 @@
 {
-  "name": "nadir/merchant-buddy",
-  "type": "project",
-  "autoload": {
-    "psr-4": {
-      "Nadir\\MerchantBuddy\\": "includes/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Nadir\\MerchantBuddy\\Tests\\": "tests/"
-    }
-  },
-  "authors": [
-    {
-      "name": "Nadir Seghir",
-      "email": "nadir.seghir@gmail.com"
-    }
-  ],
-  "require-dev": {
-    "woocommerce/woocommerce-sniffs": "^1.0",
-    "slevomat/coding-standard": "^8",
-    "phpstan/phpstan": "^1.12",
-    "szepeviktor/phpstan-wordpress": "^1.3",
-    "phpstan/extension-installer": "^1.4",
-    "php-stubs/woocommerce-stubs": "^9.7",
-    "php-stubs/wp-cli-stubs": "^2.10",
-    "php-collective/code-sniffer": "^0.2.11"
-  },
-  "config": {
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true,
-      "phpstan/extension-installer": true
-    }
-  },
-  "require": {
-    "algolia/algoliasearch-client-php": "^4.0"
-  }
+	"name": "nadir/merchant-buddy",
+	"type": "project",
+	"autoload": {
+		"psr-4": {
+			"Nadir\\MerchantBuddy\\": "includes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Nadir\\MerchantBuddy\\Tests\\": "tests/"
+		}
+	},
+	"authors": [
+		{
+			"name": "Nadir Seghir",
+			"email": "nadir.seghir@gmail.com"
+		}
+	],
+	"require-dev": {
+		"woocommerce/woocommerce-sniffs": "^1.0",
+		"slevomat/coding-standard": "^8",
+		"phpstan/phpstan": "^1.12",
+		"szepeviktor/phpstan-wordpress": "^1.3",
+		"phpstan/extension-installer": "^1.4",
+		"php-stubs/woocommerce-stubs": "^9.7",
+		"php-stubs/wp-cli-stubs": "^2.10",
+		"php-collective/code-sniffer": "^0.2.11"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"phpstan/extension-installer": true
+		}
+	},
+	"require": {
+		"algolia/algoliasearch-client-php": "^4.0"
+	}
 }

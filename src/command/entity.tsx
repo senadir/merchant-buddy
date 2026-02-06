@@ -140,7 +140,11 @@ const EntityList = () => {
 					/>
 				))}
 			{isFetched && isSuccess && items && (
-				<div className="screen-reader-text" aria-live="polite" role="status">
+				<div
+					className="screen-reader-text"
+					aria-live="polite"
+					role="status"
+				>
 					{sprintf(
 						// translators: %1$d: The number of results, %2$s: The entity label.
 						__('%1$d %2$s found', 'merchant-buddy'),
@@ -153,60 +157,63 @@ const EntityList = () => {
 	);
 };
 
-const EntityItem = memo(({
-	entityKey,
-	item,
-	shiftPressed,
-}: {
-	entityKey: string;
-	item: any;
-	shiftPressed: boolean;
-}) => {
-	const navigate = useNavigate();
-	const { entities } = useSettings();
-	const entity = entities[entityKey];
-	const selected = useCommandState((state) => {
-		return state.value === item.id.toString();
-	});
+const EntityItem = memo(
+	({
+		entityKey,
+		item,
+		shiftPressed,
+	}: {
+		entityKey: string;
+		item: any;
+		shiftPressed: boolean;
+	}) => {
+		const navigate = useNavigate();
+		const { entities } = useSettings();
+		const entity = entities[entityKey];
+		const selected = useCommandState((state) => {
+			return state.value === item.id.toString();
+		});
 
-	const primaryLink = getPrimaryLink(item, entity);
-	const secondaryLink = getSecondaryLink(item, entity);
+		const primaryLink = getPrimaryLink(item, entity);
+		const secondaryLink = getSecondaryLink(item, entity);
 
-	const link = shiftPressed && secondaryLink ? secondaryLink : primaryLink;
+		const link =
+			shiftPressed && secondaryLink ? secondaryLink : primaryLink;
 
-	useEffect(() => {
-		let timeout: number;
-		let linkElement: HTMLLinkElement | null = null;
-		if (selected && isValidUrl(link)) {
-			timeout = window.setTimeout(() => {
-				linkElement = preloadUrl(link);
-			}, 50);
-		}
-		return () => {
-			clearTimeout(timeout);
-			if (linkElement) {
-				linkElement.remove();
+		useEffect(() => {
+			let timeout: number;
+			let linkElement: HTMLLinkElement | null = null;
+			if (selected && isValidUrl(link)) {
+				timeout = window.setTimeout(() => {
+					linkElement = preloadUrl(link);
+				}, 50);
 			}
-		};
-	}, [selected, link]);
-	const handleItemSelect = useCallback(() => {
-		if (isValidUrl(link)) {
-			window.location.href = link;
-		}
-		if (link.startsWith('meta://')) {
-			navigate(link.replace('meta:/', ''));
-		}
-	}, [link, navigate]);
-	return (
-		<Command.Item
-			key={item.id}
-			value={item.id.toString()}
-			className="entity-renderer"
-			onSelect={handleItemSelect}
-		>
-			<EntityRenderer entity={entity} item={item} />
-		</Command.Item>
-	);
-});
+			return () => {
+				clearTimeout(timeout);
+				if (linkElement) {
+					linkElement.remove();
+				}
+			};
+		}, [selected, link]);
+		const handleItemSelect = useCallback(() => {
+			if (isValidUrl(link)) {
+				window.location.href = link;
+			}
+			if (link.startsWith('meta://')) {
+				navigate(link.replace('meta:/', ''));
+			}
+		}, [link, navigate]);
+		return (
+			<Command.Item
+				key={item.id}
+				value={item.id.toString()}
+				className="entity-renderer"
+				onSelect={handleItemSelect}
+			>
+				<EntityRenderer entity={entity} item={item} />
+			</Command.Item>
+		);
+	}
+);
 
 export default EntityList;
