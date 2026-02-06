@@ -23,7 +23,6 @@ class SearchSettings extends WC_Integration {
 	 * Constructor.
 	 */
 	public function __construct() {
-		global $woocommerce;
 		$this->id           = 'merchant-buddy';
 		$this->method_title = __( 'Merchant Buddy', 'merchant-buddy' );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -91,9 +90,13 @@ class SearchSettings extends WC_Integration {
 		$provider_settings        = array();
 		foreach ( $available_providers as $provider ) {
 			if ( in_array( HasSettings::class, Classes::class_uses_recursive( $provider ), true ) ) {
+				$description = method_exists( $provider, 'get_description_data' )
+					? $provider::get_description_data()
+					: $provider::get_description();
+
 				$provider_settings_schema[ $provider::get_provider_slug() ] = array(
 					'title'       => $provider::get_provider_label(),
-					'description' => $provider::get_description(),
+					'description' => $description,
 					'fields'      => $provider::get_fields(),
 					'option_name' => 'merchant_buddy_' . $provider::get_provider_slug() . '_provider_settings',
 				);
@@ -194,6 +197,8 @@ class SearchSettings extends WC_Integration {
 					),
 				),
 				'sanitize_callback' => function ( $value ) {
+					$allowed_keys = array( 'enabled', 'provider', 'shortcut' );
+					$value        = array_intersect_key( (array) $value, array_flip( $allowed_keys ) );
 					return wp_parse_args(
 						$value,
 						get_option( 'merchant_buddy_main_settings', array() )
@@ -248,6 +253,13 @@ class SearchSettings extends WC_Integration {
 							),
 						),
 						'sanitize_callback' => function ( $value ) use ( $provider ) {
+							$allowed_keys = array_map(
+								function ( $field ) {
+									return $field['name'];
+								},
+								$provider::get_fields()
+							);
+							$value = array_intersect_key( (array) $value, array_flip( $allowed_keys ) );
 							return wp_parse_args(
 								$value,
 								get_option( 'merchant_buddy_' . $provider::get_provider_slug() . '_provider_settings', array() )
@@ -341,7 +353,7 @@ class SearchSettings extends WC_Integration {
 				if ( 'select' === $field['type'] ) {
 					$acc[ $field['name'] ]['enum'] = array_map(
 						function ( $option ) {
-							return $option['name'];
+							return $option['value'];
 						},
 						$field['options']
 					);
