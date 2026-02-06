@@ -219,11 +219,20 @@ class Algolia implements ProviderInterface, Batchable {
 	/**
 	 * Returns the description of the provider.
 	 *
-	 * @return array
+	 * @return string
 	 */
 	public static function get_description() {
+		return __( 'The Algolia search provider keys. You can find those keys in your Algolia dashboard and settings screen.', 'merchant-buddy' );
+	}
+
+	/**
+	 * Returns additional description data including external links.
+	 *
+	 * @return array
+	 */
+	public static function get_description_data() {
 		return array(
-			'description' => __( 'The Algolia search provider keys. You can find those keys in your Algolia dashboard and settings screen.', 'merchant-buddy' ),
+			'description' => static::get_description(),
 			'link'        => array(
 				'text' => __( 'Get your keys', 'merchant-buddy' ),
 				'url'  => 'https://dashboard.algolia.com/account/api-keys/all',
