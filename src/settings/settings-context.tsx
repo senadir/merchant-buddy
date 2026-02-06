@@ -8,6 +8,7 @@ import {
 	createContext,
 	useCallback,
 	useContext,
+	useMemo,
 	useState,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -190,20 +191,36 @@ export const SettingsProvider = ({
 				);
 			});
 	}, [settings, entities, providerSettings]);
-	const settingsData = {
-		settings,
-		setSettingField,
-		readOnlySettings,
-		entities,
-		toggleEntity,
-		updateEntities,
-		providerSettingsSchema,
-		providerSettings,
-		setProviderSettingField,
-		isSaving,
-		save,
-		isDirty,
-	};
+	const settingsData = useMemo(
+		() => ({
+			settings,
+			setSettingField,
+			readOnlySettings,
+			entities,
+			toggleEntity,
+			updateEntities,
+			providerSettingsSchema,
+			providerSettings,
+			setProviderSettingField,
+			isSaving,
+			save,
+			isDirty,
+		}),
+		[
+			settings,
+			setSettingField,
+			readOnlySettings,
+			entities,
+			toggleEntity,
+			updateEntities,
+			providerSettingsSchema,
+			providerSettings,
+			setProviderSettingField,
+			isSaving,
+			save,
+			isDirty,
+		]
+	);
 
 	return (
 		<SettingsContext.Provider value={settingsData}>
