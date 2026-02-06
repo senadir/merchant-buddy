@@ -1,4 +1,4 @@
-import { createPortal } from '@wordpress/element';
+import { createPortal, useRef } from '@wordpress/element';
 
 export const Portal = ({
 	children,
@@ -7,9 +7,12 @@ export const Portal = ({
 	children: React.ReactNode;
 	target: string;
 }) => {
-	const element = document.querySelector(target);
-	if (!element) {
+	const elementRef = useRef<Element | null>(null);
+	if (!elementRef.current) {
+		elementRef.current = document.querySelector(target);
+	}
+	if (!elementRef.current) {
 		return null;
 	}
-	return createPortal(children, element);
+	return createPortal(children, elementRef.current);
 };
