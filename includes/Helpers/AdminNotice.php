@@ -46,7 +46,7 @@ class AdminNotice {
 	 */
 	public function display_notices(): void {
 		foreach ( $this->notices as $notice ) { ?>
-			<div class="<?php echo esc_attr( $notice['type'] ); ?> notice <?php echo $notice['dismissible'] ? 'is-dismissible' : ''; ?>">
+			<div class="notice notice-<?php echo esc_attr( $notice['type'] ); ?> <?php echo $notice['dismissible'] ? 'is-dismissible' : ''; ?>">
 				<p><?php echo esc_html( $notice['message'] ); ?></p>
 			</div>
 			<?php
