@@ -18,8 +18,8 @@
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
     "allowSyntheticDefaultImports": true,
-    "composite": true,
     "rootDir": ".",
     "typeRoots": ["./node_modules/@types"]
   }
