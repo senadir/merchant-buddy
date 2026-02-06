@@ -25,7 +25,7 @@ const SettingsWrapper = styled.form`
 
 const SettingsPage = () => {
 	return (
-		<SettingsWrapper id="local-pickup-settings">
+		<SettingsWrapper id="merchant-buddy-settings">
 			<SettingsProvider>
 				<GeneralSettings />
 				<EntitySettings />
