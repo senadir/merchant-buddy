@@ -35,21 +35,6 @@ add_action(
 	}
 );
 
-// Check if WooCommerce is installed and active
-add_action(
-	'plugins_loaded',
-	function () {
-		if ( ! class_exists( 'woocommerce' ) ) {
-			add_action(
-				'admin_notices',
-				function () {
-						echo '<div class="error"><p>Merchant Buddy requires WooCommerce to be installed and enabled.</p></div>';
-				}
-			);
-		}
-	}
-);
-
 // Load Composer autoloader
 if ( file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
 	require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
@@ -66,10 +51,19 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
 
 use Nadir\MerchantBuddy\SearchManager;
 use Nadir\MerchantBuddy\SearchSettings;
-// Initiate SearchManager
+// Initiate SearchManager only if WooCommerce is active.
 add_action(
 	'plugins_loaded',
 	function () {
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			add_action(
+				'admin_notices',
+				function () {
+						echo '<div class="error"><p>Merchant Buddy requires WooCommerce to be installed and enabled.</p></div>';
+				}
+			);
+			return;
+		}
 		new SearchManager();
 	}
 );
