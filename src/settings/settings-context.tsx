@@ -9,6 +9,7 @@ import {
 	useCallback,
 	useContext,
 	useMemo,
+	useRef,
 	useState,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -101,6 +102,13 @@ export const SettingsProvider = ({
 		setEntities(data);
 	}, []);
 
+	const settingsRef = useRef(settings);
+	settingsRef.current = settings;
+	const entitiesRef = useRef(entities);
+	entitiesRef.current = entities;
+	const providerSettingsRef = useRef(providerSettings);
+	providerSettingsRef.current = providerSettings;
+
 	const save = useCallback(() => {
 		type SettingsData = {
 			merchant_buddy_main_settings: {
@@ -112,18 +120,22 @@ export const SettingsProvider = ({
 			[key: string]: unknown;
 		};
 
+		const currentSettings = settingsRef.current;
+		const currentEntities = entitiesRef.current;
+		const currentProviderSettings = providerSettingsRef.current;
+
 		const data: SettingsData = {
 			merchant_buddy_main_settings: {
-				enabled: settings.enabled ? 'yes' : 'no',
-				provider: settings.provider,
-				shortcut: settings.shortcut,
+				enabled: currentSettings.enabled ? 'yes' : 'no',
+				provider: currentSettings.provider,
+				shortcut: currentSettings.shortcut,
 			},
-			merchant_buddy_enabled_entities: entities
+			merchant_buddy_enabled_entities: currentEntities
 				.filter((entity) => entity.enabled)
 				.map((entity) => entity.key),
 		};
 
-		Object.entries(providerSettings).forEach(
+		Object.entries(currentProviderSettings).forEach(
 			([providerKey, providerSetting]) => {
 				const optionName =
 					providerSettingsSchema[providerKey]?.option_name;
@@ -190,7 +202,7 @@ export const SettingsProvider = ({
 					)
 				);
 			});
-	}, [settings, entities, providerSettings]);
+	}, []);
 	const settingsData = useMemo(
 		() => ({
 			settings,
