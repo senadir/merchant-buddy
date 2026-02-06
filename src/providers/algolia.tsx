@@ -37,7 +37,9 @@ const AlgoliaProvider: Provider = {
 			signal,
 		});
 		return results.hits.map((hit) => ({
-			id: parseInt(hit.objectID, 10),
+			id: Number.isNaN(Number(hit.objectID))
+				? hit.objectID
+				: Number(hit.objectID),
 			...hit,
 		}));
 	},
@@ -62,7 +64,9 @@ const AlgoliaProvider: Provider = {
 		return data.results.reduce(
 			(acc, result, index) => {
 				acc[entityKeys[index]] = result.hits.map((hit) => ({
-					id: parseInt(hit.objectID, 10),
+					id: Number.isNaN(Number(hit.objectID))
+					? hit.objectID
+					: Number(hit.objectID),
 					...hit,
 				}));
 				return acc;
