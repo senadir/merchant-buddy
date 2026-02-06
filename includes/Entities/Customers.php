@@ -124,12 +124,16 @@ class Customers extends AbstractEntity implements Batchable {
 	/**
 	 * Update an customer item.
 	 *
-	 * @param mixed                    $customer_id The ID of the customer.
-	 * @param WC_Customer|WP_User|null $customer The customer object.
+	 * @param WC_Customer|int          $customer_or_id The customer object or ID.
+	 * @param WC_Customer|WP_User|null $customer       The customer object.
 	 * @return void
 	 */
-	public function update_item( $customer_id, $customer = null ): void {
-		$customer      = $customer instanceof \WC_Customer ? $customer : new \WC_Customer( $customer_id );
+	public function update_item( $customer_or_id, $customer = null ): void {
+		if ( $customer_or_id instanceof WC_Customer ) {
+			$customer = $customer_or_id;
+		} elseif ( ! $customer instanceof WC_Customer ) {
+			$customer = new WC_Customer( (int) $customer_or_id );
+		}
 		$customer_id   = $customer->get_id();
 		$customer_data = $this->get_item_data( $customer );
 
@@ -174,7 +178,6 @@ class Customers extends AbstractEntity implements Batchable {
 			)
 		);
 
-		$display_fields = self::get_display_fields();
 		return array_map(
 			array( $this, 'get_item_data' ),
 			array_map(
