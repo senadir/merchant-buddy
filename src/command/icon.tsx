@@ -1,4 +1,4 @@
-import { Component } from "@wordpress/element";
+import { Component, type ErrorInfo, type ReactNode } from "@wordpress/element";
 import {
   help,
   inbox,
