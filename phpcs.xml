@@ -82,14 +82,10 @@
 	</rule>
 
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
-		<exclude-pattern>*</exclude-pattern>
+		<exclude-pattern>includes/</exclude-pattern>
 	</rule>
 
-	<rule ref="Squiz.Commenting.FileComment.MissingPackageTag">
-		<exclude-pattern>*</exclude-pattern>
-	</rule>
-
-	<rule ref="Squiz.Commenting.InlineComment.InvalidEndChar">
-		<exclude-pattern>*</exclude-pattern>
+	<rule ref="WooCommerce-Core">
+		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
 	</rule>
 </ruleset>
