@@ -95,19 +95,19 @@ const shortcutValidity = (
 	};
 };
 
+const isMac = (): boolean => {
+	const platform =
+		(navigator as any).userAgentData?.platform ?? navigator.platform;
+	return platform.includes('Mac') || platform === 'macOS';
+};
+
 const transformedShortcut = (keys: string[]): string[] =>
 	keys.map((key) =>
 		key
-			.replace('meta', navigator.platform.includes('Mac') ? '⌘' : '⊞')
-			.replace(
-				'alt',
-				navigator.platform.includes('Mac') ? '⌥' : 'Alt'
-			)
+			.replace('meta', isMac() ? '⌘' : '⊞')
+			.replace('alt', isMac() ? '⌥' : 'Alt')
 			.replace('shift', '⇧')
-			.replace(
-				'ctrl',
-				navigator.platform.includes('Mac') ? '⌃' : 'Ctrl'
-			)
+			.replace('ctrl', isMac() ? '⌃' : 'Ctrl')
 	);
 
 const ShortcutDisplay = ({
