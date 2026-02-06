@@ -211,11 +211,9 @@ class SearchManager {
 	 * Load the scripts in admin for managers and frontend if enabled.
 	 */
 	private function load_scripts() {
-		if ( current_user_can( 'manage_options' ) ) {
-			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_panel_scripts' ) );
-			if ( 'yes' === $this->get_setting( 'frontend', 'no' ) ) {
-				add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_panel_scripts' ) );
-			}
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_panel_scripts' ) );
+		if ( 'yes' === $this->get_setting( 'frontend', 'no' ) ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_panel_scripts' ) );
 		}
 	}
 
@@ -223,6 +221,10 @@ class SearchManager {
 	 * Enqueue the panel scripts.
 	 */
 	public function enqueue_panel_scripts() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		$plugin_url        = plugin_dir_url( __DIR__ );
 		$plugin_path       = plugin_dir_path( __DIR__ );
 		$script_path       = 'build/index.js';
