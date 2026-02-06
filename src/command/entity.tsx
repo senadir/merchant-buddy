@@ -1,5 +1,6 @@
 import { Command, useCommandState } from 'cmdk';
 import {
+	memo,
 	useEffect,
 	useState,
 	useCallback,
@@ -142,7 +143,7 @@ const EntityList = () => {
 	);
 };
 
-const EntityItem = ({
+const EntityItem = memo(({
 	entityKey,
 	item,
 	shiftPressed,
@@ -196,6 +197,6 @@ const EntityItem = ({
 			<EntityRenderer entity={entity} item={item} />
 		</Command.Item>
 	);
-};
+});
 
 export default EntityList;
