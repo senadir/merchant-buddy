@@ -295,15 +295,14 @@ class SearchManager {
 
 		$entities = 'all' === $entity ? array_keys( $this->entities ) : array( $entity );
 
+		$active_provider = $this->provider;
 		if ( $provider ) {
 			try {
-				$provider_instance = $this->switch_provider( $provider );
-				$changed_provider  = true;
+				$active_provider  = $this->switch_provider( $provider );
+				$changed_provider = true;
 			} catch ( \Exception $e ) {
 				\WP_CLI::error( 'Error switching provider: ' . $e->getMessage() );
 			}
-		} else {
-			$provider = $this->provider;
 		}
 
 		foreach ( $entities as $entity ) {
@@ -316,17 +315,17 @@ class SearchManager {
 
 			if ( $changed_provider ) {
 				$entity_class    = $this->get_enabled_entities()[ $entity ];
-				$entity_instance = new $entity_class( $provider );
+				$entity_instance = new $entity_class( $active_provider );
 			}
 
 			// Check if provider implements Batchable
-			if ( $provider instanceof Batchable ) {
+			if ( $active_provider instanceof Batchable ) {
 				$page = 1;
 				do {
 					if ( 'update' === $method ) {
 						$items = $entity_instance->get_items( $page, $per_page );
 						if ( ! empty( $items ) ) {
-							$provider->batch_update_items( $items, $entity );
+							$active_provider->batch_update_items( $items, $entity );
 							\WP_CLI::success( sprintf( 'Processed page %d of %s items', $page, $entity ) );
 						}
 					} elseif ( 'delete' === $method ) {
@@ -342,7 +341,7 @@ class SearchManager {
 							);
 						}
 						if ( ! empty( $items ) ) {
-							$provider->batch_delete_items( $items, $entity );
+							$active_provider->batch_delete_items( $items, $entity );
 							\WP_CLI::success( sprintf( 'Processed page %d of %s items', $page, $entity ) );
 						}
 					}
@@ -416,7 +415,7 @@ class SearchManager {
 			'main'     => array(
 				'provider'       => $this->provider->get_provider_slug(),
 				'enabled'        => $this->is_enabled(),
-				'shortcut'       => $this->get_setting('shortcut', 'meta+k'),
+				'shortcut'       => $this->get_setting( 'shortcut', 'meta+k' ),
 				'initialEntries' => array( '/' ),
 				'initialIndex'   => 0,
 				'dialog'         => apply_filters( 'merchant_buddy_internal_dialog', true ), // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
