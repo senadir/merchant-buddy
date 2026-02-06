@@ -1,9 +1,18 @@
-import { searchClient } from '@algolia/client-search';
+import { searchClient, type SearchClient } from '@algolia/client-search';
 import { Provider, Item } from './types';
 
-const algoliaAppId = window.searchBuddy?.provider?.application_id || '';
-const algoliaSearchKey = window.searchBuddy?.provider?.search_api_key || '';
-const client = searchClient(algoliaAppId, algoliaSearchKey);
+let client: SearchClient | null = null;
+
+function getClient(): SearchClient {
+	if (!client) {
+		const algoliaAppId =
+			window.searchBuddy?.provider?.application_id || '';
+		const algoliaSearchKey =
+			window.searchBuddy?.provider?.search_api_key || '';
+		client = searchClient(algoliaAppId, algoliaSearchKey);
+	}
+	return client;
+}
 
 function parseFacetQuery(query: string) {
 	const facetMatches = query.match(/[+][^\s]+/g);
@@ -33,7 +42,7 @@ const AlgoliaProvider: Provider = {
 				...(facetFilters.length > 0 && { facetFilters }),
 			},
 		};
-		const results = await client.searchSingleIndex(searchQuery, {
+		const results = await getClient().searchSingleIndex(searchQuery, {
 			signal,
 		});
 		return results.hits.map((hit) => ({
@@ -47,7 +56,7 @@ const AlgoliaProvider: Provider = {
 	async searchAll(query: string, signal?: AbortSignal) {
 		const { cleanQuery, facetFilters } = parseFacetQuery(query);
 		const entityKeys = getEnabledEntityKeys();
-		const data = await client.search(
+		const data = await getClient().search(
 			{
 				requests: entityKeys.map((indexName) => ({
 					indexName,
