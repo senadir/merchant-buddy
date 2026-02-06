@@ -20,8 +20,8 @@ export function getSecondaryLinkLabel(entity: Entity) {
 	return entity.bindings?.secondary_action?.label;
 }
 
-export function isValidUrl(url: string) {
-	return url && (url.startsWith('http://') || url.startsWith('https://'));
+export function isValidUrl(url: string | null | undefined): boolean {
+	return !!url && (url.startsWith('http://') || url.startsWith('https://'));
 }
 
 export function preloadUrl(url: string): HTMLLinkElement {
