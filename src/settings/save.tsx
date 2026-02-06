@@ -37,7 +37,7 @@ const SaveSettings = () => {
 				}}
 				type="submit"
 			>
-				{__('Save changes', 'woocommerce')}
+				{__('Save changes', 'merchant-buddy')}
 			</Button>
 		</SaveSectionWrapper>
 	);
