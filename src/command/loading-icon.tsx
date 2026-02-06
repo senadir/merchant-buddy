@@ -16,3 +16,4 @@ export const LoadingIcon = forwardRef((props: any, ref: any) => {
 		</div>
 	);
 });
+LoadingIcon.displayName = 'LoadingIcon';
