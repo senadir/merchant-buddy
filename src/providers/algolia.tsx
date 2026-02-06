@@ -1,8 +1,9 @@
-import { SearchClient, searchClient } from '@algolia/client-search';
+import { searchClient } from '@algolia/client-search';
 import { Provider, Item } from './types';
 
 const algoliaAppId = window.searchBuddy?.provider?.application_id || '';
 const algoliaSearchKey = window.searchBuddy?.provider?.search_api_key || '';
+const client = searchClient(algoliaAppId, algoliaSearchKey);
 
 function parseFacetQuery(query: string) {
 	const facetMatches = query.match(/[+][^\s]+/g);
@@ -12,10 +13,17 @@ function parseFacetQuery(query: string) {
 	return { cleanQuery, facetFilters };
 }
 
-const AlgoliaProvider: Provider & { client: () => SearchClient } = {
-	client: () => searchClient(algoliaAppId, algoliaSearchKey),
+function getEnabledEntityKeys(): string[] {
+	const entities = window.searchBuddy?.entities;
+	if (!entities) {
+		return [];
+	}
+	return Object.keys(entities);
+}
+
+const AlgoliaProvider: Provider = {
 	id: 'algolia',
-	async search(query: string, entity: string) {
+	async search(query: string, entity: string, signal?: AbortSignal) {
 		const { cleanQuery, facetFilters } = parseFacetQuery(query);
 		const searchQuery = {
 			indexName: entity,
@@ -25,52 +33,35 @@ const AlgoliaProvider: Provider & { client: () => SearchClient } = {
 				...(facetFilters.length > 0 && { facetFilters }),
 			},
 		};
-		const client = this.client();
-		const results = await client.searchSingleIndex(searchQuery);
+		const results = await client.searchSingleIndex(searchQuery, {
+			signal,
+		});
 		return results.hits.map((hit) => ({
-			id: parseInt(hit.objectID, 10), // Convert string to number
+			id: parseInt(hit.objectID, 10),
 			...hit,
 		}));
 	},
 
-	async searchAll(query: string) {
+	async searchAll(query: string, signal?: AbortSignal) {
 		const { cleanQuery, facetFilters } = parseFacetQuery(query);
-		const client = this.client();
-		const data = await client.search({
-			requests: [
-				{
-					indexName: 'products',
+		const entityKeys = getEnabledEntityKeys();
+		const data = await client.search(
+			{
+				requests: entityKeys.map((indexName) => ({
+					indexName,
 					query: cleanQuery,
 					params:
 						facetFilters.length > 0
 							? facetFilters.join(',')
 							: undefined,
-				},
-				{
-					indexName: 'orders',
-					query: cleanQuery,
-					params:
-						facetFilters.length > 0
-							? facetFilters.join(',')
-							: undefined,
-				},
-				{
-					indexName: 'customers',
-					query: cleanQuery,
-					params:
-						facetFilters.length > 0
-							? facetFilters.join(',')
-							: undefined,
-				},
-			],
-		});
+				})),
+			},
+			{ signal }
+		);
 
-		// Transform results into the expected format
 		return data.results.reduce(
 			(acc, result, index) => {
-				const indexNames = ['products', 'orders', 'customers'];
-				acc[indexNames[index]] = result.hits.map((hit) => ({
-					// @todo Figure out why Algolia is not returning the correct type.
+				acc[entityKeys[index]] = result.hits.map((hit) => ({
 					id: parseInt(hit.objectID, 10),
 					...hit,
 				}));
