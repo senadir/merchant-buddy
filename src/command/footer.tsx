@@ -11,10 +11,7 @@ export const useCurrentEntity = () => {
 	if (!lastPage) {
 		return null;
 	}
-	if (!Object.keys(entities).includes(lastPage)) {
-		return null;
-	}
-	return entities[lastPage];
+	return entities[lastPage] ?? null;
 };
 
 export function CommandFooter() {
