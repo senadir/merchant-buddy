@@ -31,7 +31,7 @@ type Settings = {
 		initialIndex: number;
 		dialog: boolean;
 	};
-	provider: Record<string, any>;
+	provider: Record<string, unknown>;
 };
 
 const SettingsContext = createContext<Settings>({

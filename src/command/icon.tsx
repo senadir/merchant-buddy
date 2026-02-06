@@ -45,7 +45,7 @@ const spinner = (
 );
 
 // Map of icon names to their imported modules
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, JSX.Element> = {
 	help,
 	inbox,
 	archive,

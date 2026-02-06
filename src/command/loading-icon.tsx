@@ -3,7 +3,10 @@
  */
 import { forwardRef } from '@wordpress/element';
 
-export const LoadingIcon = forwardRef((props: any, ref: any) => {
+export const LoadingIcon = forwardRef<
+	HTMLDivElement,
+	React.HTMLAttributes<HTMLDivElement>
+>((props, ref) => {
 	return (
 		<div className="pinot" ref={ref} {...props}>
 			<div className="small-circles">

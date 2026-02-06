@@ -221,11 +221,9 @@ export const SettingsProvider = ({
 		[
 			settings,
 			setSettingField,
-			readOnlySettings,
 			entities,
 			toggleEntity,
 			updateEntities,
-			providerSettingsSchema,
 			providerSettings,
 			setProviderSettingField,
 			isSaving,

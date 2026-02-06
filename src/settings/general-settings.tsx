@@ -96,8 +96,10 @@ const shortcutValidity = (
 };
 
 const isMac = (): boolean => {
-	const platform =
-		(navigator as any).userAgentData?.platform ?? navigator.platform;
+	const nav = navigator as Navigator & {
+		userAgentData?: { platform: string };
+	};
+	const platform = nav.userAgentData?.platform ?? navigator.platform;
 	return platform.includes('Mac') || platform === 'macOS';
 };
 
@@ -109,6 +111,19 @@ const transformedShortcut = (keys: string[]): string[] =>
 			.replace('shift', '⇧')
 			.replace('ctrl', isMac() ? '⌃' : 'Ctrl')
 	);
+
+const getValidityVariant = (validity: {
+	valid: boolean;
+	complete: boolean;
+}): 'success' | 'idle' | 'error' => {
+	if (validity.complete) {
+		return 'success';
+	}
+	if (validity.valid) {
+		return 'idle';
+	}
+	return 'error';
+};
 
 const ShortcutDisplay = ({
 	shortcut,
@@ -172,13 +187,7 @@ const ShortcutDisplay = ({
 					noArrow={false}
 				>
 					<ShortcutTooltip
-						variant={
-							validityStatus.complete
-								? 'success'
-								: validityStatus.valid
-									? 'idle'
-									: 'error'
-						}
+						variant={getValidityVariant(validityStatus)}
 					>
 						{recordedKeys.size > 0 ? (
 							<>
@@ -188,13 +197,9 @@ const ShortcutDisplay = ({
 									).map((key) => (
 										<StyledShortcut
 											key={key}
-											variant={
-												validityStatus.complete
-													? 'success'
-													: validityStatus.valid
-														? 'idle'
-														: 'error'
-											}
+											variant={getValidityVariant(
+												validityStatus
+											)}
 										>
 											{key}
 										</StyledShortcut>

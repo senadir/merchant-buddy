@@ -164,7 +164,7 @@ const EntityItem = memo(
 		shiftPressed,
 	}: {
 		entityKey: string;
-		item: any;
+		item: Record<string, unknown> & { id: number | string };
 		shiftPressed: boolean;
 	}) => {
 		const navigate = useNavigate();

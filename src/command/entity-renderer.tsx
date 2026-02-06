@@ -5,7 +5,7 @@ import { layouts } from './layouts';
 const camelCase = (str: string): string =>
 	str.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
 
-const getItemValue = (item: any, key: string) => {
+const getItemValue = (item: Record<string, unknown>, key: string): unknown => {
 	if (key.startsWith('icon:')) {
 		return key;
 	}
@@ -18,7 +18,13 @@ const getItemValue = (item: any, key: string) => {
 	if (key.includes('.')) {
 		return key
 			.split('.')
-			.reduce((obj: any, k: string) => obj && obj[k], item);
+			.reduce(
+				(obj: Record<string, unknown> | undefined, k: string) =>
+					obj && typeof obj === 'object'
+						? (obj[k] as Record<string, unknown>)
+						: undefined,
+				item as Record<string, unknown> | undefined
+			);
 	}
 	// Check if item has key or return null
 	if (item[key] === undefined) {
@@ -29,8 +35,8 @@ const getItemValue = (item: any, key: string) => {
 
 const bindingToValue = (
 	binding: string | string[] | { label: string; url: string },
-	item: any
-): any => {
+	item: Record<string, unknown>
+): unknown => {
 	if (typeof binding === 'string') {
 		return getItemValue(item, binding);
 	}
@@ -45,7 +51,7 @@ export const EntityRenderer = ({
 	item,
 }: {
 	entity: Entity;
-	item: any;
+	item: Record<string, unknown>;
 }) => {
 	const template = entity.template as keyof typeof layouts;
 	const bindings = entity.bindings;
@@ -62,5 +68,6 @@ export const EntityRenderer = ({
 		[bindings, item]
 	);
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Layout props vary by template
 	return <Layout {...(props as any)} />;
 };

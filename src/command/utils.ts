@@ -1,11 +1,16 @@
 import { Entity } from './settings-context';
 
-export function getPrimaryLink(item: any, entity: Entity) {
+export function getPrimaryLink(item: Record<string, unknown>, entity: Entity) {
 	const primaryAction = entity.bindings?.primary_action;
-	return item[primaryAction?.url] ? item[primaryAction?.url] : null;
+	return primaryAction?.url && item[primaryAction.url]
+		? (item[primaryAction.url] as string)
+		: null;
 }
 
-export function getSecondaryLink(item: any, entity: Entity) {
+export function getSecondaryLink(
+	item: Record<string, unknown>,
+	entity: Entity
+) {
 	const secondaryAction = entity.bindings?.secondary_action;
 	return secondaryAction?.url && item[secondaryAction?.url]
 		? item[secondaryAction?.url]
