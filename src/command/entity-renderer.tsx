@@ -1,6 +1,8 @@
-import { camelCase } from 'change-case';
 import { Entity } from './settings-context';
 import { layouts } from './layouts';
+
+const camelCase = (str: string): string =>
+	str.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
 
 const getItemValue = (item: any, key: string) => {
 	if (key.startsWith('icon:')) {
