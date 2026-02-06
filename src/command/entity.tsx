@@ -1,6 +1,5 @@
 import { Command, useCommandState } from 'cmdk';
 import {
-	useMemo,
 	useEffect,
 	useState,
 	useCallback,
@@ -159,13 +158,8 @@ const EntityItem = ({
 		return state.value === item.id.toString();
 	});
 
-	const primaryLink = useMemo(() => {
-		return getPrimaryLink(item, entity);
-	}, [item, entity]);
-
-	const secondaryLink = useMemo(() => {
-		return getSecondaryLink(item, entity);
-	}, [item, entity]);
+	const primaryLink = getPrimaryLink(item, entity);
+	const secondaryLink = getSecondaryLink(item, entity);
 
 	const link = shiftPressed && secondaryLink ? secondaryLink : primaryLink;
 
