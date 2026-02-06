@@ -129,7 +129,7 @@ class SearchManager {
 			return;
 		}
 
-		if ( ! class_exists( $providers[ $selected_provider ] ) || ! in_array( ProviderInterface::class, class_implements( $providers[ $selected_provider ] ), true ) ) {
+		if ( ! in_array( ProviderInterface::class, class_implements( $providers[ $selected_provider ] ), true ) ) {
 			$this->provider = new $providers['default']();
 			$this->notices->add_notice( sprintf( 'WooBuddy: %s provider does not implement ProviderInterface, fallback to default', $selected_provider ), 'error' );
 			update_option( 'merchant_buddy_main_settings', array_merge( $this->settings, array( 'provider' => 'default' ) ) );
@@ -149,9 +149,7 @@ class SearchManager {
 			$this->provider = new $providers['default']();
 			$this->notices->add_notice( sprintf( 'WooBuddy: %s provider is not ready, fallback to default', $selected_provider ), 'error' );
 			update_option( 'merchant_buddy_main_settings', array_merge( $this->settings, array( 'provider' => 'default' ) ) );
-			return;
 		}
-		return true;
 	}
 
 	/**
