@@ -64,6 +64,45 @@ const ShortcutTooltip = styled.span<{ variant?: 'success' | 'idle' | 'error' }>`
 	align-items: center;
 	gap: 8px;
 `;
+const shortcutValidity = (
+	keys: Set<string>
+): { valid: boolean; complete: boolean } => {
+	const modifiers = ['alt', 'ctrl', 'meta', 'shift'];
+	const keyArray = Array.from(keys);
+	const hasModifier = keyArray.some((key) =>
+		modifiers.includes(key.toLowerCase())
+	);
+	const nonModifierKeys = keyArray.filter(
+		(key) => !modifiers.includes(key.toLowerCase())
+	);
+
+	const complete = hasModifier && nonModifierKeys.length > 0;
+	const valid =
+		complete ||
+		(hasModifier && nonModifierKeys.length === 0) ||
+		keyArray.length === 0;
+
+	return {
+		valid,
+		complete,
+	};
+};
+
+const transformedShortcut = (keys: string[]): string[] =>
+	keys.map((key) =>
+		key
+			.replace('meta', navigator.platform.includes('Mac') ? '⌘' : '⊞')
+			.replace(
+				'alt',
+				navigator.platform.includes('Mac') ? '⌥' : 'Alt'
+			)
+			.replace('shift', '⇧')
+			.replace(
+				'ctrl',
+				navigator.platform.includes('Mac') ? '⌃' : 'Ctrl'
+			)
+	);
+
 const ShortcutDisplay = ({
 	shortcut,
 	setShortcut,
@@ -73,9 +112,6 @@ const ShortcutDisplay = ({
 }) => {
 	const [recordedKeys, { start, stop, isRecording, resetKeys }] =
 		useRecordHotkeys();
-	if (!shortcut) {
-		return '';
-	}
 
 	const toggleRecording = () => {
 		if (isRecording) {
@@ -91,7 +127,7 @@ const ShortcutDisplay = ({
 		}
 
 		let timeoutId: NodeJS.Timeout;
-		const { valid, complete } = shortcutValidity(recordedKeys);
+		const { complete } = shortcutValidity(recordedKeys);
 		const handleKeyUp = () => {
 			clearTimeout(timeoutId);
 
@@ -111,44 +147,10 @@ const ShortcutDisplay = ({
 			clearTimeout(timeoutId);
 		};
 	}, [isRecording, recordedKeys, setShortcut, stop, resetKeys]);
-	const shortcutValidity = (
-		keys: Set<string>
-	): { valid: boolean; complete: boolean } => {
-		const modifiers = ['alt', 'ctrl', 'meta', 'shift'];
-		const keyArray = Array.from(keys);
-		const hasModifier = keyArray.some((key) =>
-			modifiers.includes(key.toLowerCase())
-		);
-		const nonModifierKeys = keyArray.filter(
-			(key) => !modifiers.includes(key.toLowerCase())
-		);
 
-		const complete = hasModifier && nonModifierKeys.length > 0;
-		const valid =
-			complete ||
-			(hasModifier && nonModifierKeys.length === 0) ||
-			keyArray.length === 0;
-
-		return {
-			valid,
-			complete,
-		};
-	};
-
-	const transformedShortcut = (keys: string[]): string[] =>
-		keys.map((key) =>
-			key
-				.replace('meta', navigator.platform.includes('Mac') ? '⌘' : '⊞')
-				.replace(
-					'alt',
-					navigator.platform.includes('Mac') ? '⌥' : 'Alt'
-				)
-				.replace('shift', '⇧')
-				.replace(
-					'ctrl',
-					navigator.platform.includes('Mac') ? '⌃' : 'Ctrl'
-				)
-		);
+	if (!shortcut) {
+		return '';
+	}
 
 	const validityStatus = shortcutValidity(recordedKeys);
 	return (
