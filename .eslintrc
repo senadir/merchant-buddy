@@ -1,9 +1,19 @@
 {
+  "parser": "@typescript-eslint/parser",
   "extends": [
     "plugin:@wordpress/eslint-plugin/recommended",
     "plugin:@tanstack/query/recommended",
+    "plugin:@typescript-eslint/recommended",
   ],
   "rules": {
     "react/no-unknown-property": "off",
   },
+  "overrides": [
+    {
+      "files": ["*.config.js"],
+      "rules": {
+        "@typescript-eslint/no-require-imports": "off",
+      },
+    },
+  ],
 }
