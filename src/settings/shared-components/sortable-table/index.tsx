@@ -3,7 +3,7 @@
  */
 import styled from '@emotion/styled';
 import { Icon, dragHandle } from '@wordpress/icons';
-import { Fragment, useMemo } from '@wordpress/element';
+import { Fragment, useCallback, useMemo } from '@wordpress/element';
 import {
 	closestCenter,
 	DndContext,
@@ -163,6 +163,16 @@ const StyledTable = styled.table`
 	}
 `;
 
+const getColumnProps = (column: ColumnProps, parentClassName: string) => {
+	const align = column?.align || 'left';
+	const width = column?.width || 'auto';
+
+	return {
+		className: `${parentClassName}-${column.name} align-${align}`,
+		style: { width },
+	};
+};
+
 export const SortableTable = ({
 	columns,
 	data,
@@ -186,28 +196,21 @@ export const SortableTable = ({
 		useSensor(KeyboardSensor, {})
 	);
 
-	function handleDragEnd(event: DragEndEvent) {
-		const { active, over } = event;
+	const handleDragEnd = useCallback(
+		(event: DragEndEvent) => {
+			const { active, over } = event;
 
-		if (active !== null && over !== null && active?.id !== over?.id) {
-			const newData = arrayMove(
-				data,
-				items.indexOf(active.id),
-				items.indexOf(over.id)
-			);
-			setData(newData);
-		}
-	}
-
-	const getColumnProps = (column: ColumnProps, parentClassName: string) => {
-		const align = column?.align || 'left';
-		const width = column?.width || 'auto';
-
-		return {
-			className: `${parentClassName}-${column.name} align-${align}`,
-			style: { width },
-		};
-	};
+			if (active !== null && over !== null && active?.id !== over?.id) {
+				const newData = arrayMove(
+					data,
+					items.indexOf(active.id),
+					items.indexOf(over.id)
+				);
+				setData(newData);
+			}
+		},
+		[data, items, setData]
+	);
 
 	return (
 		<DndContext
@@ -247,7 +250,7 @@ export const SortableTable = ({
 						items={items}
 						strategy={verticalListSortingStrategy}
 					>
-						{!!data.length ? (
+						{data.length > 0 ? (
 							data.map(
 								(row) =>
 									row && (
