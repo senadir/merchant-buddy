@@ -139,6 +139,16 @@ const EntityList = () => {
 						shiftPressed={shiftPressed}
 					/>
 				))}
+			{isFetched && isSuccess && items && (
+				<div className="screen-reader-text" aria-live="polite" role="status">
+					{sprintf(
+						// translators: %1$d: The number of results, %2$s: The entity label.
+						__('%1$d %2$s found', 'merchant-buddy'),
+						items.length,
+						entity.label.toLowerCase()
+					)}
+				</div>
+			)}
 		</>
 	);
 };
