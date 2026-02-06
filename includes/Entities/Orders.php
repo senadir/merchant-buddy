@@ -108,8 +108,8 @@ class Orders extends AbstractEntity implements Batchable {
 		);
 		// Extract email from query if it's prefixed with "email:".
 		if ( str_starts_with( $query, 'email:' ) ) {
-			$parts                 = explode( ' ', $query, 2 );
-			$email                 = trim( substr( $parts[0], 6 ) ); // Trim whitespace from email
+			$parts = explode( ' ', $query, 2 );
+			$email = trim( substr( $parts[0], 6 ) ); // Trim whitespace from email
 			if ( ! empty( $email ) ) { // Only set billing_email if not empty
 				$args['billing_email'] = sanitize_email( $email ); // Sanitize email
 			}
@@ -133,7 +133,8 @@ class Orders extends AbstractEntity implements Batchable {
 	public function create_item( int $order_id = 0 ): void {
 		$order = wc_get_order( $order_id );
 
-		if ( ! $order || ! $order instanceof WC_Order ) {
+		// Guard against non-order post types from generic hooks like untrashed_post.
+		if ( ! $order instanceof WC_Order ) {
 			return;
 		}
 
@@ -176,6 +177,11 @@ class Orders extends AbstractEntity implements Batchable {
 	 */
 	public function delete_item( int $order_id = 0 ): void {
 		if ( ! $order_id ) {
+			return;
+		}
+
+		// Guard against non-order post types from generic hooks like wp_trash_post.
+		if ( 'shop_order' !== get_post_type( $order_id ) && ! wc_get_order( $order_id ) ) {
 			return;
 		}
 
