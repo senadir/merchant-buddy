@@ -6,6 +6,11 @@
       "Nadir\\MerchantBuddy\\": "includes/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Nadir\\MerchantBuddy\\Tests\\": "tests/"
+    }
+  },
   "authors": [
     {
       "name": "Nadir Seghir",
