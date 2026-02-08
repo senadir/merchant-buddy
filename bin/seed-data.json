@@ -1,0 +1,339 @@
+{
+	"products": [
+		{
+			"name": "Organic Cotton T-Shirt",
+			"sku": "seed-tshirt-001",
+			"regular_price": "29.99",
+			"description": "Premium organic cotton t-shirt, pre-shrunk and sustainably sourced.",
+			"short_description": "Soft organic cotton tee.",
+			"categories": ["Apparel"],
+			"manage_stock": true,
+			"stock_quantity": 150
+		},
+		{
+			"name": "Ceramic Coffee Mug",
+			"sku": "seed-mug-002",
+			"regular_price": "14.95",
+			"description": "Hand-glazed ceramic mug, 12 oz capacity. Microwave and dishwasher safe.",
+			"short_description": "12 oz hand-glazed ceramic mug.",
+			"categories": ["Kitchen"],
+			"manage_stock": true,
+			"stock_quantity": 85
+		},
+		{
+			"name": "Wireless Bluetooth Headphones",
+			"sku": "seed-headphones-003",
+			"regular_price": "79.00",
+			"sale_price": "59.99",
+			"description": "Over-ear wireless headphones with active noise cancellation and 30-hour battery life.",
+			"short_description": "ANC wireless headphones, 30hr battery.",
+			"categories": ["Electronics"],
+			"manage_stock": true,
+			"stock_quantity": 42
+		},
+		{
+			"name": "Leather Wallet",
+			"sku": "seed-wallet-004",
+			"regular_price": "45.00",
+			"description": "Full-grain leather bifold wallet with RFID blocking. 8 card slots.",
+			"short_description": "RFID-blocking leather bifold wallet.",
+			"categories": ["Accessories"],
+			"manage_stock": true,
+			"stock_quantity": 200
+		},
+		{
+			"name": "Stainless Steel Water Bottle",
+			"sku": "seed-bottle-005",
+			"regular_price": "24.99",
+			"description": "Double-walled vacuum insulated, keeps drinks cold 24hrs or hot 12hrs. 750ml.",
+			"short_description": "Insulated 750ml steel bottle.",
+			"categories": ["Kitchen"],
+			"manage_stock": true,
+			"stock_quantity": 300
+		},
+		{
+			"name": "Yoga Mat Premium",
+			"sku": "seed-yoga-006",
+			"regular_price": "49.95",
+			"description": "6mm thick non-slip yoga mat with alignment lines. Made from natural rubber.",
+			"short_description": "6mm non-slip natural rubber yoga mat.",
+			"categories": ["Fitness"],
+			"manage_stock": true,
+			"stock_quantity": 60
+		},
+		{
+			"name": "Scented Soy Candle - Lavender",
+			"sku": "seed-candle-007",
+			"regular_price": "18.50",
+			"description": "Hand-poured soy wax candle with natural lavender essential oil. Burns for 45 hours.",
+			"short_description": "Lavender soy candle, 45hr burn time.",
+			"categories": ["Home"],
+			"manage_stock": true,
+			"stock_quantity": 120
+		},
+		{
+			"name": "Bamboo Cutting Board Set",
+			"sku": "seed-board-008",
+			"regular_price": "34.99",
+			"description": "Set of 3 bamboo cutting boards in small, medium, and large sizes. Juice groove on each.",
+			"short_description": "3-piece bamboo cutting board set.",
+			"categories": ["Kitchen"],
+			"manage_stock": true,
+			"stock_quantity": 75
+		},
+		{
+			"name": "Running Shoes - CloudStep",
+			"sku": "seed-shoes-009",
+			"regular_price": "129.00",
+			"sale_price": "99.00",
+			"description": "Lightweight running shoes with responsive foam cushioning and breathable mesh upper.",
+			"short_description": "Lightweight cushioned running shoes.",
+			"categories": ["Fitness"],
+			"manage_stock": true,
+			"stock_quantity": 35
+		},
+		{
+			"name": "Desk Organizer - Walnut",
+			"sku": "seed-desk-010",
+			"regular_price": "39.00",
+			"description": "Handcrafted walnut desk organizer with compartments for pens, phone, and accessories.",
+			"short_description": "Walnut wood desk organizer.",
+			"categories": ["Home"],
+			"manage_stock": false
+		}
+	],
+	"customers": [
+		{
+			"email": "sarah.johnson@example.com",
+			"first_name": "Sarah",
+			"last_name": "Johnson",
+			"username": "sarahjohnson",
+			"billing": {
+				"first_name": "Sarah",
+				"last_name": "Johnson",
+				"company": "Johnson Design Co.",
+				"address_1": "742 Evergreen Terrace",
+				"address_2": "Suite 4",
+				"city": "Portland",
+				"state": "OR",
+				"postcode": "97201",
+				"country": "US",
+				"email": "sarah.johnson@example.com",
+				"phone": "503-555-0142"
+			},
+			"shipping": {
+				"first_name": "Sarah",
+				"last_name": "Johnson",
+				"company": "Johnson Design Co.",
+				"address_1": "742 Evergreen Terrace",
+				"address_2": "Suite 4",
+				"city": "Portland",
+				"state": "OR",
+				"postcode": "97201",
+				"country": "US"
+			}
+		},
+		{
+			"email": "marcus.chen@example.com",
+			"first_name": "Marcus",
+			"last_name": "Chen",
+			"username": "marcuschen",
+			"billing": {
+				"first_name": "Marcus",
+				"last_name": "Chen",
+				"company": "",
+				"address_1": "1200 Market Street",
+				"address_2": "Apt 8B",
+				"city": "San Francisco",
+				"state": "CA",
+				"postcode": "94102",
+				"country": "US",
+				"email": "marcus.chen@example.com",
+				"phone": "415-555-0198"
+			},
+			"shipping": {
+				"first_name": "Marcus",
+				"last_name": "Chen",
+				"company": "",
+				"address_1": "1200 Market Street",
+				"address_2": "Apt 8B",
+				"city": "San Francisco",
+				"state": "CA",
+				"postcode": "94102",
+				"country": "US"
+			}
+		},
+		{
+			"email": "emma.rodriguez@example.com",
+			"first_name": "Emma",
+			"last_name": "Rodriguez",
+			"username": "emmarodriguez",
+			"billing": {
+				"first_name": "Emma",
+				"last_name": "Rodriguez",
+				"company": "Bright Spark LLC",
+				"address_1": "456 Oak Avenue",
+				"address_2": "",
+				"city": "Austin",
+				"state": "TX",
+				"postcode": "78701",
+				"country": "US",
+				"email": "emma.rodriguez@example.com",
+				"phone": "512-555-0167"
+			},
+			"shipping": {
+				"first_name": "Emma",
+				"last_name": "Rodriguez",
+				"company": "Bright Spark LLC",
+				"address_1": "456 Oak Avenue",
+				"address_2": "",
+				"city": "Austin",
+				"state": "TX",
+				"postcode": "78701",
+				"country": "US"
+			}
+		},
+		{
+			"email": "james.patel@example.com",
+			"first_name": "James",
+			"last_name": "Patel",
+			"username": "jamespatel",
+			"billing": {
+				"first_name": "James",
+				"last_name": "Patel",
+				"company": "Patel & Sons",
+				"address_1": "89 Broadway",
+				"address_2": "Floor 3",
+				"city": "New York",
+				"state": "NY",
+				"postcode": "10006",
+				"country": "US",
+				"email": "james.patel@example.com",
+				"phone": "212-555-0134"
+			},
+			"shipping": {
+				"first_name": "James",
+				"last_name": "Patel",
+				"company": "Patel & Sons",
+				"address_1": "89 Broadway",
+				"address_2": "Floor 3",
+				"city": "New York",
+				"state": "NY",
+				"postcode": "10006",
+				"country": "US"
+			}
+		},
+		{
+			"email": "olivia.brooks@example.com",
+			"first_name": "Olivia",
+			"last_name": "Brooks",
+			"username": "oliviabrooks",
+			"billing": {
+				"first_name": "Olivia",
+				"last_name": "Brooks",
+				"company": "",
+				"address_1": "2301 Lake Shore Drive",
+				"address_2": "",
+				"city": "Chicago",
+				"state": "IL",
+				"postcode": "60614",
+				"country": "US",
+				"email": "olivia.brooks@example.com",
+				"phone": "312-555-0189"
+			},
+			"shipping": {
+				"first_name": "Olivia",
+				"last_name": "Brooks",
+				"company": "",
+				"address_1": "2301 Lake Shore Drive",
+				"address_2": "",
+				"city": "Chicago",
+				"state": "IL",
+				"postcode": "60614",
+				"country": "US"
+			}
+		}
+	],
+	"orders": [
+		{
+			"status": "completed",
+			"customer_index": 0,
+			"line_items": [
+				{ "product_index": 0, "quantity": 2 },
+				{ "product_index": 4, "quantity": 1 }
+			]
+		},
+		{
+			"status": "processing",
+			"customer_index": 1,
+			"line_items": [
+				{ "product_index": 2, "quantity": 1 },
+				{ "product_index": 1, "quantity": 3 }
+			]
+		},
+		{
+			"status": "completed",
+			"customer_index": 2,
+			"line_items": [
+				{ "product_index": 5, "quantity": 1 },
+				{ "product_index": 6, "quantity": 2 }
+			]
+		},
+		{
+			"status": "on-hold",
+			"customer_index": 3,
+			"line_items": [
+				{ "product_index": 8, "quantity": 1 }
+			]
+		},
+		{
+			"status": "processing",
+			"customer_index": 4,
+			"line_items": [
+				{ "product_index": 3, "quantity": 1 },
+				{ "product_index": 7, "quantity": 1 },
+				{ "product_index": 6, "quantity": 1 }
+			]
+		},
+		{
+			"status": "completed",
+			"customer_index": 0,
+			"line_items": [
+				{ "product_index": 9, "quantity": 1 }
+			]
+		},
+		{
+			"status": "pending",
+			"customer_index": 2,
+			"line_items": [
+				{ "product_index": 1, "quantity": 2 },
+				{ "product_index": 4, "quantity": 2 }
+			]
+		},
+		{
+			"status": "processing",
+			"customer_index": 3,
+			"line_items": [
+				{ "product_index": 0, "quantity": 1 },
+				{ "product_index": 2, "quantity": 1 },
+				{ "product_index": 7, "quantity": 1 }
+			]
+		},
+		{
+			"status": "completed",
+			"customer_index": 1,
+			"line_items": [
+				{ "product_index": 5, "quantity": 2 },
+				{ "product_index": 8, "quantity": 1 }
+			]
+		},
+		{
+			"status": "on-hold",
+			"customer_index": 4,
+			"line_items": [
+				{ "product_index": 9, "quantity": 2 },
+				{ "product_index": 3, "quantity": 1 }
+			]
+		}
+	]
+}

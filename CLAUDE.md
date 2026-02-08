@@ -9,12 +9,12 @@ Merchant Buddy is a WooCommerce plugin that adds a command palette (cmdk-based) 
 ## Build & Development Commands
 
 ```bash
-npm run build          # Production build (wp-scripts)
-npm run start          # Dev mode with watch
-npm run lint:js        # ESLint (WordPress + TanStack Query rules)
-npm run lint:css       # Stylelint
-npm run format         # Prettier
-npm run plugin-zip     # Package for distribution (runs composer install --no-dev first)
+bun run build          # Production build (wp-scripts)
+bun run start          # Dev mode with watch
+bun run lint:js        # ESLint (WordPress + TanStack Query rules)
+bun run lint:css       # Stylelint
+bun run format         # Prettier
+bun run plugin-zip     # Package for distribution (runs composer install --no-dev first)
 ```
 
 PHP linting:
@@ -25,8 +25,8 @@ vendor/bin/phpstan analyse          # PHPStan level 5, includes/ only
 
 Testing:
 ```bash
-npm run test:unit      # PHPUnit via composer test (tests/php/, PHPUnit 10)
-npm run test:e2e       # Playwright (tests/e2e/, Chromium only, requires wp-env)
+bun run test:unit      # PHPUnit via composer test (tests/php/, PHPUnit 10)
+bun run test:e2e       # Playwright (tests/e2e/, Chromium only, requires wp-env)
 ```
 
 - **PHP unit tests** (`tests/php/Unit/`): Cover entities, providers, settings, helpers, templates. Run against WooCommerce stubs (`tests/php/stubs/wc-stubs.php`), no live WordPress needed.

@@ -18,7 +18,7 @@ const STORAGE_STATE_PATH = path.join( AUTH_DIR, 'admin.json' );
  */
 function wpCli( command: string ): string | null {
 	try {
-		return execSync( `npx wp-env run tests-cli -- wp ${ command }`, {
+		return execSync( `bunx wp-env run tests-cli -- wp ${ command }`, {
 			encoding: 'utf-8',
 			stdio: [ 'pipe', 'pipe', 'pipe' ],
 		} ).trim();

@@ -9,3 +9,4 @@ vendor/
 dist/
 tests/e2e/setup/.auth/
 tests/e2e/results/
+.wp-env.override.json
