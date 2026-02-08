@@ -23,7 +23,14 @@ vendor/bin/phpcs                    # PHP_CodeSniffer (WooCommerce-Core ruleset)
 vendor/bin/phpstan analyse          # PHPStan level 5, includes/ only
 ```
 
-There are no test suites currently in use (`test:unit` and `test:e2e` scripts exist but no test files).
+Testing:
+```bash
+npm run test:unit      # PHPUnit via composer test (tests/php/, PHPUnit 10)
+npm run test:e2e       # Playwright (tests/e2e/, Chromium only, requires wp-env)
+```
+
+- **PHP unit tests** (`tests/php/Unit/`): Cover entities, providers, settings, helpers, templates. Run against WooCommerce stubs (`tests/php/stubs/wc-stubs.php`), no live WordPress needed.
+- **E2E tests** (`tests/e2e/specs/`): Playwright tests for command palette (`command-palette.spec.ts`), search flows (`search-flow.spec.ts`), and settings page (`settings-page.spec.ts`). Require a running wp-env instance at `localhost:8889`. Auth state stored in `tests/e2e/setup/.auth/admin.json`.
 
 WP-CLI batch command (requires WordPress environment):
 ```bash

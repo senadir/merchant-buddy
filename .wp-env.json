@@ -1,0 +1,12 @@
+{
+	"phpVersion": "8.4",
+	"plugins": [
+		"https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip"
+	],
+	"mappings": {
+		"wp-content/plugins/merchant-buddy": "."
+	},
+	"lifecycleScripts": {
+		"afterStart": "wp-env run tests-cli -- wp plugin activate merchant-buddy && wp-env run tests-cli -- wp rewrite structure '/%postname%/' --hard && wp-env run tests-cli -- wp wc tool run install_pages --user=admin"
+	}
+}

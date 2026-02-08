@@ -7,3 +7,5 @@ vscode
 .DS_Store
 vendor/
 dist/
+tests/e2e/setup/.auth/
+tests/e2e/results/

@@ -25,13 +25,19 @@
 		"phpstan/extension-installer": "^1.4",
 		"php-stubs/woocommerce-stubs": "^9.7",
 		"php-stubs/wp-cli-stubs": "^2.10",
-		"php-collective/code-sniffer": "^0.2.11"
+		"php-collective/code-sniffer": "^0.2.11",
+		"phpunit/phpunit": "^10.5",
+		"brain/monkey": "^2.6",
+		"mockery/mockery": "^1.6"
 	},
 	"config": {
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true,
 			"phpstan/extension-installer": true
 		}
+	},
+	"scripts": {
+		"test": "phpunit -c tests/php/phpunit.xml"
 	},
 	"require": {
 		"algolia/algoliasearch-client-php": "^4.0"
