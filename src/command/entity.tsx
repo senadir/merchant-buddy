@@ -29,18 +29,19 @@ const EntityList = () => {
 	const loadingIconRef = useRef<HTMLDivElement>(null);
 	const search = searchParams.get('search') ?? '';
 	const [shiftPressed, setShiftPressed] = useState(false);
+	const shiftRef = useRef(false);
 	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			setShiftPressed(event.shiftKey);
+		const updateShift = (event: KeyboardEvent) => {
+			if (shiftRef.current !== event.shiftKey) {
+				shiftRef.current = event.shiftKey;
+				setShiftPressed(event.shiftKey);
+			}
 		};
-		const handleKeyUp = (event: KeyboardEvent) => {
-			setShiftPressed(event.shiftKey);
-		};
-		window.addEventListener('keydown', handleKeyDown);
-		window.addEventListener('keyup', handleKeyUp);
+		window.addEventListener('keydown', updateShift);
+		window.addEventListener('keyup', updateShift);
 		return () => {
-			window.removeEventListener('keydown', handleKeyDown);
-			window.removeEventListener('keyup', handleKeyUp);
+			window.removeEventListener('keydown', updateShift);
+			window.removeEventListener('keyup', updateShift);
 		};
 	}, []);
 	const {
@@ -199,7 +200,7 @@ const EntityItem = memo(
 			if (isValidUrl(link)) {
 				window.location.href = link;
 			}
-			if (link.startsWith('meta://')) {
+			if (typeof link === 'string' && link.startsWith('meta://')) {
 				navigate(link.replace('meta:/', ''));
 			}
 		}, [link, navigate]);

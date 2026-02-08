@@ -7,7 +7,7 @@ import type { Provider } from './types/provider';
 export const defaultSettings = {
 	enabled: true,
 	provider: 'default',
-	shortcut: 'meta+k',
+	shortcut: 'meta+h',
 };
 
 export const defaultReadyOnlySettings = {

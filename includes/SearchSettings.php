@@ -66,7 +66,7 @@ class SearchSettings extends WC_Integration {
 			array(
 				'provider' => 'default',
 				'enabled'  => 'yes',
-				'shortcut' => 'meta+k',
+				'shortcut' => 'meta+h',
 			)
 		);
 		$enabled_entities    = get_option( 'merchant_buddy_enabled_entities', array( 'orders', 'products', 'customers' ) );
@@ -174,7 +174,7 @@ class SearchSettings extends WC_Integration {
 				'default'           => array(
 					'enabled'  => 'yes',
 					'provider' => 'default',
-					'shortcut' => 'meta+k',
+					'shortcut' => 'meta+h',
 				),
 				'show_in_rest'      => array(
 					'schema' => array(
@@ -191,7 +191,7 @@ class SearchSettings extends WC_Integration {
 							),
 							'shortcut' => array(
 								'type'    => 'string',
-								'default' => 'meta+k',
+								'default' => 'meta+h',
 							),
 						),
 					),

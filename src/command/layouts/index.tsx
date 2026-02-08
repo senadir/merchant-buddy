@@ -2,6 +2,9 @@ import { IconElement } from '../icon';
 import './styles.css';
 
 const PrimaryImage = ({ primaryImage }: { primaryImage: string }) => {
+	if (!primaryImage) {
+		return null;
+	}
 	if (primaryImage.startsWith('icon:')) {
 		const icon = primaryImage.split(':')[1];
 		return <IconElement value={icon} />;

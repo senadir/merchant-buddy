@@ -44,7 +44,7 @@ const CommandPalette = () => {
 	const [open, setOpen] = useState(false);
 
 	// Get the custom shortcut from settings
-	const customShortcut = window.searchBuddy?.main?.shortcut || 'meta+k';
+	const customShortcut = window.searchBuddy?.main?.shortcut || 'meta+h';
 
 	// Use react-hotkeys-hook to handle the custom shortcut
 	useHotkeys(
@@ -70,12 +70,26 @@ const CommandPalette = () => {
 			sprintf(__('Search %s…', 'merchant-buddy'), pages.at(-1))
 		: __('Select something to search', 'merchant-buddy');
 
-	// Sync up searchValue with route query params
+	// Reset to root route and clear search after the dialog has been closed for 5s.
+	useEffect(() => {
+		if (!open && window.searchBuddy.main.dialog) {
+			const timer = setTimeout(() => {
+				navigate('/', { replace: true });
+				setInputValue('');
+			}, 5000);
+			return () => clearTimeout(timer);
+		}
+	}, [open, navigate]);
+
+	// Local state for immediate input responsiveness, debounced sync to URL for queries.
 	const [searchParams, setSearchParams] = useSearchParams();
-	const searchValue = searchParams.get('search') || '';
+	const [inputValue, setInputValue] = useState(
+		() => searchParams.get('search') || ''
+	);
 	const debounceTimerRef = useRef<ReturnType<typeof setTimeout>>();
 	const setSearchValue = useCallback(
 		(value: string) => {
+			setInputValue(value);
 			clearTimeout(debounceTimerRef.current);
 			debounceTimerRef.current = setTimeout(() => {
 				setSearchParams({ search: value }, { replace: true });
@@ -104,7 +118,7 @@ const CommandPalette = () => {
 			onKeyDown={(e) => {
 				if (
 					pages.length !== 0 &&
-					searchValue.length === 0 &&
+					inputValue.length === 0 &&
 					e.key === 'Backspace'
 				) {
 					navigate(-1);
@@ -128,7 +142,7 @@ const CommandPalette = () => {
 			</div>
 			<CommandInput
 				placeholder={placeholder}
-				searchValue={searchValue}
+				searchValue={inputValue}
 				setSearchValue={setSearchValue}
 			/>
 			<Command.List>

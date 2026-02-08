@@ -153,7 +153,7 @@ class Orders extends AbstractEntity implements Batchable {
 	 * @param WC_Order $order The order object.
 	 * @return void
 	 */
-	public function update_item( int $order_id, WC_Order $order = null ): void {
+	public function update_item( int $order_id, ?WC_Order $order = null ): void {
 		$order = $order instanceof WC_Order ? $order : wc_get_order( $order_id );
 
 		if ( ! $order ) {
